@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block body %}
+  <div class="entrance">
+    <div>
+      <div class="brand">Mr. Paralympia<small>{% trans "Paralympians are the most persistent athletes there are. We are losers. Let's be a little like them." %}</small></div>
+      <div class="card auth-card">
+        {% include "partials/messages.html" %}
+        {% block main %}{% endblock %}
+      </div>
+      {% include "partials/language_switch.html" %}
+    </div>
+  </div>
+{% endblock %}

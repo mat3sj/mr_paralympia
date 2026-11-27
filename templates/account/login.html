@@ -1,0 +1,18 @@
+{% extends "layouts/entrance.html" %}
+{% load i18n %}
+{% block title %}{% trans "Sign in" %}{% endblock %}
+{% block main %}
+<h1>{% trans "Sign in" %}</h1>
+{% include "account/_google_button.html" %}
+<form method="post" action="{% url 'account_login' %}">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="field"><label for="{{ form.login.id_for_label }}">{% trans "Email" %}</label>{{ form.login }}{{ form.login.errors }}</div>
+  <div class="field"><label for="{{ form.password.id_for_label }}">{% trans "Password" %}</label>{{ form.password }}{{ form.password.errors }}</div>
+  {{ redirect_field }}
+  <button type="submit">{% trans "Sign in" %}</button>
+</form>
+<p>{% url 'account_signup' as signup_url %}{% url 'account_reset_password' as reset_url %}
+  {% blocktrans %}No account yet? <a href="{{ signup_url }}">Sign up</a>. Forgot your password? <a href="{{ reset_url }}">Reset it</a>.{% endblocktrans %}
+</p>
+{% endblock %}

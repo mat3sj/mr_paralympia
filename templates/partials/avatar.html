@@ -1,0 +1,1 @@
+<span class="av{% if large %} lg{% endif %}" style="background:{{ user.avatar_color }}">{% if user.photo %}<img src="{{ user.photo.url }}" alt="">{% else %}{{ user.initials }}{% endif %}</span>

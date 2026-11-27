@@ -1,0 +1,62 @@
+{% extends "layouts/app.html" %}
+{% load i18n %}
+{% block title %}{% trans "Participants" %}{% endblock %}
+{% block heading %}⚙ {% trans "participants" %}{% endblock %}
+{% block subheading %}{% trans "Admin only" %}{% endblock %}
+{% block main %}
+<div class="stack">
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    {% if challenge %}<a class="btn" href="{% url 'admin:challenges_challenge_change' challenge.id %}">{% trans "Edit challenge" %}</a>{% endif %}
+    <a class="btn" href="{% url 'admin:challenges_challenge_add' %}">{% trans "New challenge" %}</a>
+  </div>
+
+  <section class="card admin-card">
+    <h2>{% trans "Waiting for approval" %} <span class="pill {% if users_waiting_for_approval %}warn{% else %}neutral{% endif %}">{{ users_waiting_for_approval|length }}</span><span class="hint">{% trans "verified email only" %}</span></h2>
+    {% for user in users_waiting_for_approval %}
+      <div class="waiting">
+        {% include "partials/avatar.html" %}
+        <div class="name">
+          <b>{{ user }}</b>
+          <small>{{ user.email }} · {{ user.date_joined|date:"j. n. H:i" }}{% if user.birth_year %} · {{ user.birth_year }}{% endif %}{% if user.hometown %} · {{ user.hometown }}{% endif %}</small>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="user" value="{{ user.id }}">
+          <button class="btn primary" name="action" value="approve">{% trans "Approve" %}</button>
+          <button class="btn danger" name="action" value="reject" onclick="return confirm('{% trans "Delete this registration?" %}')">{% trans "Reject" %}</button>
+        </form>
+      </div>
+    {% empty %}
+      <div class="waiting"><span class="hint">{% trans "Nobody is waiting." %}</span></div>
+    {% endfor %}
+  </section>
+
+  {% if challenge %}
+  <section class="card admin-card">
+    <h2>{% trans "Participants" %} · {{ challenge.name }}<span class="hint num">{% blocktrans with count=paid_count total=participants|length collected=collected %}paid {{ count }} of {{ total }} · {{ collected }} CZK{% endblocktrans %}</span></h2>
+    <p class="hint" style="padding:10px 14px 0">{% trans "Without a confirmed entry fee a player cannot log exercise. Variable symbol = user number." %}</p>
+    <div style="overflow-x:auto">
+      <table class="participants">
+        <tr><th>{% trans "Player" %}</th><th>{% trans "VS" %}</th><th>{% trans "Joined" %}</th><th>{% trans "Paid" %}</th></tr>
+        {% for participant in participants %}
+          <tr>
+            <td><b>{{ participant.user }}</b></td>
+            <td class="num">{{ participant.user.id }}</td>
+            <td class="num">{{ participant.created_at|date:"j. n. Y" }}</td>
+            <td>
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="participant" value="{{ participant.id }}">
+                <button class="switch" name="action" value="toggle_paid" role="switch" aria-checked="{{ participant.has_paid|yesno:'true,false' }}" aria-label="{% trans 'Paid' %}: {{ participant.user }}"></button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="hint">{% trans "Nobody has joined yet." %}</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

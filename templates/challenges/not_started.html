@@ -1,0 +1,11 @@
+{% extends "layouts/app.html" %}
+{% load i18n %}
+{% block title %}{% trans "My day" %}{% endblock %}
+{% block heading %}# {% trans "my-day" %}{% endblock %}
+{% block subheading %}{{ challenge.name }}{% endblock %}
+{% block main %}
+  <div class="card banner">
+    <b>{% blocktrans with date=challenge.start_date|date:"j. n. Y" %}You are in. The challenge starts on {{ date }}.{% endblocktrans %}</b>
+    <span class="hint">{% blocktrans with minimum=challenge.first_day_minimum increment=challenge.minimum_increment %}The first day the minimum is {{ minimum }} points, then {{ increment }} more every day. Rest while you can.{% endblocktrans %}</span>
+  </div>
+{% endblock %}

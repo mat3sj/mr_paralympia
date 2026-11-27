@@ -1,0 +1,56 @@
+{% extends "layouts/app.html" %}
+{% load i18n %}
+{% block title %}{% trans "Join" %}{% endblock %}
+{% block heading %}# {% trans "join" %}{% endblock %}
+{% block subheading %}{% trans "Rules and entry fee" %}{% endblock %}
+{% block main %}
+{% if not challenge %}
+  <div class="card banner"><b>{% trans "No challenge is set up yet." %}</b></div>
+{% else %}
+<div class="two-columns">
+  <section class="card rules">
+    <h2>{{ challenge.name }}</h2>
+    <p class="hint">{% blocktrans with start=challenge.start_date|date:"j. n. Y" last=challenge.last_join_date|date:"j. n. Y" %}Starts {{ start }} · joining until {{ last }}{% endblocktrans %}</p>
+    <div class="rules-text">{{ challenge.rules }}</div>
+    <table class="exercise-table">
+      {% for exercise in exercises %}
+        <tr>
+          <td>{{ exercise.name }}{% if exercise.unit == 'km' %} (1 km){% endif %}</td>
+          <td>{% blocktrans with points=exercise.points_per_unit|floatformat:"-2" %}{{ points }} pts{% endblocktrans %}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section class="card pay">
+    {% if participant.has_paid %}
+      <span class="pill ok">{% trans "You are in" %}</span>
+      <p>{% trans "Payment confirmed. Good luck!" %}</p>
+      <a class="btn primary wide" href="{% url 'day' %}">{% trans "Go to my day" %}</a>
+    {% elif is_closed %}
+      <span class="pill neutral">{% trans "Joining closed" %}</span>
+      <p>{% blocktrans with date=challenge.last_join_date|date:"j. n. Y" %}Joining was possible until {{ date }}. See you at the next challenge.{% endblocktrans %}</p>
+    {% else %}
+      <b>{% trans "Entry fee" %}</b>
+      <div class="qr">{{ qr_svg|safe }}</div>
+      <dl>
+        <dt>{% trans "Amount" %}</dt><dd class="num">{{ challenge.entry_fee }} Kč</dd>
+        <dt>{% trans "Account" %}</dt><dd class="num">{{ challenge.bank_account }}</dd>
+        <dt>{% trans "Variable symbol" %}</dt><dd class="num">{{ user.id }}</dd>
+        <dt>{% trans "Message" %}</dt><dd>{{ payment_message }}</dd>
+      </dl>
+      {% if participant %}
+        <span class="pill warn">{% trans "Waiting for payment confirmation" %}</span>
+        <p class="hint">{% trans "An admin checks payments by hand. You can log exercise once it is confirmed." %}</p>
+      {% else %}
+        <form method="post" class="stack" style="width:100%">
+          {% csrf_token %}
+          <button class="btn primary wide" type="submit">{% trans "Join the challenge" %}</button>
+        </form>
+        <p class="hint">{% trans "Scan the QR code in your banking app. Every Czech bank reads it." %}</p>
+      {% endif %}
+    {% endif %}
+  </section>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layouts/entrance.html" %}
+{% load i18n %}
+{% block title %}{% trans "Waiting for approval" %}{% endblock %}
+{% block main %}
+<h1>{% trans "Almost there" %}</h1>
+<p>{% trans "An admin has to approve your account. You will get an email once it happens." %}</p>
+<a class="btn" href="{% url 'profile' %}">{% trans "Edit profile" %}</a>
+<form method="post" action="{% url 'account_logout' %}">{% csrf_token %}<button class="btn wide" type="submit">{% trans "Sign out" %}</button></form>
+{% endblock %}
