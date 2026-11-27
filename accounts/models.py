@@ -14,6 +14,11 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def waiting_for_approval(self):
+        return self \
+            .filter(is_approved=False, is_staff=False, is_active=True, emailaddress__verified=True) \
+            .order_by('date_joined')
+
     def create_superuser(self, email, password=None, **extra_fields):
         return self.create_user(
             email,

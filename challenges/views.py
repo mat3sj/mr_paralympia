@@ -1,8 +1,5 @@
 import datetime
-import unicodedata
-from decimal import ROUND_DOWN, Decimal, InvalidOperation
 
-import segno
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
@@ -14,61 +11,80 @@ from django.urls import reverse
 from django.utils import timezone, translation
 from django.utils.translation import gettext as _
 
-from challenges.models import Challenge, Entry, Participant
-from challenges.standings import compute_result
+from challenges.forms import DayForm
+from challenges.models import Challenge, Participant
+from challenges.payments import payment_message, payment_qr_svg
+from challenges.standings import compute_result, date_range
 
-MAX_AMOUNT = Decimal('99999')
+
+def get_paid_participant(challenge, user):
+    participant = challenge.participant_for(user) if challenge else None
+    return participant if participant and participant.has_paid else None
 
 
 @login_required
 def home(request):
-    challenge = Challenge.current()
-    if challenge and challenge.participants.filter(user=request.user, has_paid=True).exists():
+    if get_paid_participant(Challenge.current(), request.user):
         return redirect('day')
     return redirect('join')
 
 
-def parse_amount(exercise, text):
+def pick_date(date_text, challenge, result):
+    if not date_text:
+        return result.last_date
     try:
-        amount = Decimal(text.replace(',', '.').strip() or '0')
-    except InvalidOperation:
-        return None
-    if not amount.is_finite():
-        return None
-    amount = min(max(amount, Decimal(0)), MAX_AMOUNT)
-    if exercise.unit == 'reps':
-        return amount.to_integral_value(ROUND_DOWN)
-    return amount.quantize(Decimal('0.1'), ROUND_DOWN)
+        date = datetime.date.fromisoformat(date_text)
+    except ValueError:
+        raise Http404
+    return min(max(date, challenge.start_date), result.last_date)
 
 
-def save_day(participant, exercises, date, post_data):
-    for exercise in exercises:
-        amount = parse_amount(exercise, post_data[f'exercise-{exercise.id}'])
-        if amount is None:
-            continue
-        if amount:
-            Entry.objects.update_or_create(
-                participant=participant,
-                exercise=exercise,
-                date=date,
-                defaults={'amount': amount},
-            )
-        else:
-            Entry.objects \
-                .filter(participant=participant, exercise=exercise, date=date) \
-                .delete()
-
-
-def format_amount(amount):
-    return format(amount.normalize(), 'f')
+def day_context(result, form):
+    challenge = result.challenge
+    standing = form.standing
+    date = form.date
+    points = standing.points_on(date)
+    minimum = challenge.minimum_points(date)
+    exercise_id_2_points = {entry.exercise_id: entry.points for entry in standing.date_2_entries.get(date, [])}
+    first_chip_date = max(challenge.start_date, result.today - datetime.timedelta(days=challenge.edit_days + 1))
+    return {
+        'challenge': challenge,
+        'result': result,
+        'standing': standing,
+        'date': date,
+        'day_number': challenge.day_number(date),
+        'today': result.today,
+        'is_editable': result.is_editable(date),
+        'last_edit_date': challenge.last_edit_date(date),
+        'form': form,
+        'rows': [
+            {
+                'exercise': exercise,
+                'field': form.field_for(exercise),
+                'points': exercise_id_2_points.get(exercise.id, 0),
+            }
+            for exercise in form.exercises
+        ],
+        'chips': [
+            {
+                'date': chip_date,
+                'is_locked': challenge.is_locked(chip_date, result.today),
+                'is_done': standing.has_minimum_on(chip_date),
+            }
+            for chip_date in date_range(first_chip_date, result.last_date)
+        ],
+        'points': points,
+        'minimum': minimum,
+        'missing': max(minimum - points, 0),
+        'surplus': max(points - minimum, 0),
+        'progress': min(int(points * 100 / minimum), 100),
+    }
 
 
 @login_required
 def day(request, date_text=''):
     challenge = Challenge.current()
-    participant = Participant.objects \
-        .filter(challenge=challenge, user=request.user, has_paid=True) \
-        .first()
+    participant = get_paid_participant(challenge, request.user)
     if participant is None:
         return redirect('join')
     today = timezone.localdate()
@@ -76,83 +92,19 @@ def day(request, date_text=''):
         return render(request, 'challenges/not_started.html', {'challenge': challenge})
 
     result = compute_result(challenge, today)
-    last_date = min(today, result.finished_on or today)
-    date = last_date
-    if date_text:
-        try:
-            date = datetime.date.fromisoformat(date_text)
-        except ValueError:
-            raise Http404
-        date = min(max(date, challenge.start_date), last_date)
-    is_editable = not challenge.is_locked(date, today) and not (result.finished_on and date > result.finished_on)
-    exercises = list(challenge.exercises.all())
-
-    if request.method == 'POST' and is_editable:
-        save_day(participant, exercises, date, request.POST)
-        if not request.headers.get('HX-Request'):
+    date = pick_date(date_text, challenge, result)
+    is_editable = result.is_editable(date)
+    is_htmx = bool(request.headers.get('HX-Request'))
+    form = DayForm(request.POST or None, standing=result.standing_of(participant), date=date, disabled=not is_editable)
+    if request.method == 'POST' and is_editable and form.is_valid():
+        form.save()
+        if not is_htmx:
             return redirect('day', date_text=date.isoformat())
         result = compute_result(challenge, today)
+        form = DayForm(standing=result.standing_of(participant), date=date, disabled=False)
 
-    standing = next(standing for standing in result.standings if standing.participant == participant)
-    exercise_id_2_entry = {entry.exercise_id: entry for entry in standing.date_2_entries.get(date, [])}
-    rows = []
-    for exercise in exercises:
-        entry = exercise_id_2_entry.get(exercise.id)
-        rows.append({
-            'exercise': exercise,
-            'amount': format_amount(entry.amount) if entry else '0',
-            'points': entry.points if entry else 0,
-        })
-    points = standing.points_on(date)
-    minimum = challenge.minimum_points(date)
-    first_chip_date = max(challenge.start_date, today - datetime.timedelta(days=challenge.edit_days + 1))
-    chips = []
-    chip_date = first_chip_date
-    while chip_date <= last_date:
-        chips.append({
-            'date': chip_date,
-            'is_locked': challenge.is_locked(chip_date, today),
-            'is_done': standing.points_on(chip_date) >= challenge.minimum_points(chip_date),
-        })
-        chip_date += datetime.timedelta(days=1)
-
-    context = {
-        'challenge': challenge,
-        'date': date,
-        'today': today,
-        'day_number': challenge.day_number(date),
-        'is_editable': is_editable,
-        'rows': rows,
-        'points': points,
-        'minimum': minimum,
-        'missing': max(minimum - points, 0),
-        'surplus': max(points - minimum, 0),
-        'strike_dots': [index < standing.strikes for index in range(challenge.max_strikes)],
-        'progress': min(int(points * 100 / minimum), 100),
-        'is_adaptation': date < challenge.first_strike_date,
-        'unlock_until': date + datetime.timedelta(days=challenge.edit_days),
-        'chips': chips,
-        'standing': standing,
-        'result': result,
-    }
-    template = 'challenges/_day_panel.html' if request.headers.get('HX-Request') else 'challenges/day.html'
-    return render(request, template, context)
-
-
-def cell_state(challenge, standing, date, today):
-    if standing.is_out and date > standing.eliminated_on:
-        return 'none'
-    entries = standing.date_2_entries.get(date)
-    if date == today:
-        return 'today'
-    if standing.points_on(date) >= challenge.minimum_points(date):
-        return 'ok'
-    if date in standing.strike_dates:
-        return 'strike'
-    if date < challenge.first_strike_date:
-        joined_on = timezone.localdate(standing.participant.created_at)
-        return 'adaptation' if entries or date >= joined_on else 'none'
-    return 'none'
+    template = 'challenges/_day_panel.html' if is_htmx else 'challenges/day.html'
+    return render(request, template, day_context(result, form))
 
 
 @login_required
@@ -160,70 +112,38 @@ def board(request):
     challenge = Challenge.current()
     if challenge is None:
         return redirect('join')
-    today = timezone.localdate()
-    result = compute_result(challenge, today)
-    last_date = min(today, result.finished_on or today)
-    dates = []
-    date = challenge.start_date
-    while date <= last_date:
-        dates.append(date)
-        date += datetime.timedelta(days=1)
-
-    rows = []
-    for standing in result.standings:
-        cells = []
-        for date in dates:
-            entries = standing.date_2_entries.get(date, [])
-            cells.append({
-                'date': date,
-                'day_number': challenge.day_number(date),
-                'minimum': challenge.minimum_points(date),
-                'state': cell_state(challenge, standing, date, today),
-                'points': standing.points_on(date),
-                'entries': entries,
-                'is_locked': challenge.is_locked(date, today),
-                'unlock_until': date + datetime.timedelta(days=challenge.edit_days),
-            })
-        rows.append({
-            'standing': standing,
-            'user': standing.participant.user,
-            'cells': cells,
-            'strike_dots': [index < standing.strikes for index in range(challenge.max_strikes)],
-            'eliminated_day': challenge.day_number(standing.eliminated_on) if standing.eliminated_on else None,
-            'is_winner': standing in result.winners,
-            'is_at_risk': standing.strikes == challenge.max_strikes - 1,
-        })
+    result = compute_result(challenge, timezone.localdate())
     columns = [
-        {'date': date, 'day_number': challenge.day_number(date), 'minimum': challenge.minimum_points(date)}
-        for date in dates
+        {
+            'date': date,
+            'day_number': challenge.day_number(date),
+            'minimum': challenge.minimum_points(date),
+            'is_locked': challenge.is_locked(date, result.today),
+            'last_edit_date': challenge.last_edit_date(date),
+        }
+        for date in date_range(challenge.start_date, result.last_date)
+    ]
+    rows = [
+        {
+            'standing': standing,
+            'cells': [
+                {
+                    'column': column,
+                    'state': standing.state_on(column['date']),
+                    'points': standing.points_on(column['date']),
+                    'entries': standing.date_2_entries.get(column['date'], []),
+                }
+                for column in columns
+            ],
+        }
+        for standing in result.standings
     ]
     return render(request, 'challenges/board.html', {
         'challenge': challenge,
+        'result': result,
         'columns': columns,
         'rows': rows,
-        'result': result,
-        'today': today,
     })
-
-
-def payment_message(challenge, user):
-    text = f'{challenge.name} {user}'
-    ascii_text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode()
-    return ascii_text.replace('*', ' ').upper()[:60]
-
-
-def payment_qr_svg(challenge, user):
-    """QR Platba (SPAYD), the format every Czech banking app reads."""
-    spayd = '*'.join([
-        'SPD',
-        '1.0',
-        f'ACC:{challenge.iban}',
-        f'AM:{challenge.entry_fee}.00',
-        'CC:CZK',
-        f'X-VS:{user.id}',
-        f'MSG:{payment_message(challenge, user)}',
-    ])
-    return segno.make(spayd, error='m').svg_inline(scale=5, border=2)
 
 
 @login_required
@@ -231,11 +151,8 @@ def join(request):
     challenge = Challenge.current()
     if challenge is None:
         return render(request, 'challenges/join.html', {'challenge': None})
-    participant = Participant.objects \
-        .filter(challenge=challenge, user=request.user) \
-        .first()
-    today = timezone.localdate()
-    can_join = participant is None and today <= challenge.last_join_date
+    participant = challenge.participant_for(request.user)
+    can_join = participant is None and timezone.localdate() <= challenge.last_join_date
     if request.method == 'POST' and can_join:
         Participant.objects.create(challenge=challenge, user=request.user)
         messages.success(request, _('You signed up. Pay the entry fee; you can log exercise once an admin confirms it.'))
@@ -269,13 +186,13 @@ def manage_participants(request):
     if request.method == 'POST':
         action = request.POST['action']
         if action == 'approve':
-            user = get_object_or_404(get_user_model(), id=request.POST['user'], is_approved=False)
+            user = get_object_or_404(get_user_model().objects.waiting_for_approval(), id=request.POST['user'])
             user.is_approved = True
             user.save(update_fields=['is_approved'])
             send_approval_email(request, user)
             messages.success(request, _('%(user)s approved.') % {'user': user})
         elif action == 'reject':
-            user = get_object_or_404(get_user_model(), id=request.POST['user'], is_approved=False)
+            user = get_object_or_404(get_user_model().objects.waiting_for_approval(), id=request.POST['user'])
             user.delete()
             messages.success(request, _('Registration %(email)s deleted.') % {'email': user.email})
         elif action == 'toggle_paid':
@@ -285,19 +202,15 @@ def manage_participants(request):
             participant.save(update_fields=['has_paid', 'paid_at'])
         return redirect('manage_participants')
 
-    pending_users = get_user_model().objects \
-        .filter(is_approved=False, is_staff=False, is_active=True, emailaddress__verified=True) \
-        .order_by('date_joined')
     participants = []
-    paid_count = 0
     if challenge:
         participants = challenge.participants \
             .select_related('user') \
             .order_by('-has_paid', 'created_at')
-        paid_count = sum(participant.has_paid for participant in participants)
+    paid_count = sum(participant.has_paid for participant in participants)
     return render(request, 'challenges/manage_participants.html', {
         'challenge': challenge,
-        'pending_users': pending_users,
+        'pending_users': get_user_model().objects.waiting_for_approval(),
         'participants': participants,
         'paid_count': paid_count,
         'collected': paid_count * challenge.entry_fee if challenge else 0,

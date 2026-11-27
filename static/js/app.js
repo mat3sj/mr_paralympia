@@ -5,7 +5,8 @@ document.addEventListener('click', (event) => {
   const input = button.parentElement.querySelector('input');
   const value = parseFloat(input.value.replace(',', '.')) || 0;
   const next = Math.max(0, Math.round((value + parseFloat(button.dataset.step)) * 10) / 10);
-  input.value = next;
+  const decimalSeparator = document.documentElement.lang === 'cs' ? ',' : '.';
+  input.value = String(next).replace('.', decimalSeparator);
   input.dispatchEvent(new Event('change', { bubbles: true }));
 });
 

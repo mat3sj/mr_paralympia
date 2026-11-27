@@ -48,8 +48,16 @@ class Challenge(models.Model):
         """Late players can still back-fill the first day that counts for strikes."""
         return self.date_of_day(self.adaptation_days + self.edit_days)
 
+    def last_edit_date(self, date):
+        return date + datetime.timedelta(days=self.edit_days)
+
     def is_locked(self, date, today):
-        return date < today - datetime.timedelta(days=self.edit_days)
+        return today > self.last_edit_date(date)
+
+    def participant_for(self, user):
+        return self.participants \
+            .filter(user=user) \
+            .first()
 
     @property
     def iban(self):
