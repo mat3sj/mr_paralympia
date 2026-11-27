@@ -23,10 +23,10 @@ class UserLanguageMiddleware:
 
 
 # Paths a signed-in user may open before their profile is complete and an admin has approved them.
-OPEN_PATH_PREFIXES = (
+PATHS_ALLOWED_BEFORE_APPROVAL = (
     '/accounts/',
     '/profile/',
-    '/pending/',
+    '/waiting-for-approval/',
     '/language/',
     '/admin/',
     settings.MEDIA_URL,
@@ -34,7 +34,7 @@ OPEN_PATH_PREFIXES = (
 )
 
 
-class ApprovedUserMiddleware:
+class RequireApprovalMiddleware:
     """Keeps signed-in users on their profile until it is complete, then on a waiting page until approved."""
 
     def __init__(self, get_response):
@@ -45,10 +45,10 @@ class ApprovedUserMiddleware:
         if (
             user.is_authenticated and
             not user.is_staff and
-            not request.path.startswith(OPEN_PATH_PREFIXES)
+            not request.path.startswith(PATHS_ALLOWED_BEFORE_APPROVAL)
         ):
             if not user.has_complete_profile:
                 return redirect('profile')
             if not user.is_approved:
-                return redirect('pending')
+                return redirect('waiting_for_approval')
         return self.get_response(request)

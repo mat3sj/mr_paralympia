@@ -24,7 +24,7 @@ def sum_points(entries):
 
 @dataclasses.dataclass
 class Standing:
-    """One player's results; a third strike eliminates only once its day is locked."""
+    """One participant's results; a third strike eliminates only once its day is locked."""
 
     challenge: object
     participant: object
@@ -51,10 +51,10 @@ class Standing:
 
     @property
     def strike_dots(self):
-        return [index < self.strikes for index in range(self.challenge.max_strikes)]
+        return [index < self.strikes for index in range(self.challenge.strikes_to_eliminate)]
 
     @property
-    def out_on_day(self):
+    def third_strike_day_number(self):
         return self.challenge.day_number(self.third_strike_on)
 
     @property
@@ -65,11 +65,11 @@ class Standing:
             return 'out'
         if self.third_strike_on:
             return 'being_eliminated'
-        if self.strikes == self.challenge.max_strikes - 1:
+        if self.strikes == self.challenge.strikes_to_eliminate - 1:
             return 'at_risk'
         return 'playing'
 
-    def state_on(self, date):
+    def day_state(self, date):
         """How a day looks on the board: ok, strike, adaptation, today or none."""
         if self.is_out and date > self.third_strike_on:
             return 'none'
@@ -92,11 +92,11 @@ def build_standing(challenge, participant, date_2_entries, last_date, today):
         if sum_points(date_2_entries.get(date, [])) < challenge.minimum_points(date)
     ]
     third_strike_on = None
-    if len(strike_dates) >= challenge.max_strikes:
-        third_strike_on = strike_dates[challenge.max_strikes - 1]
+    if len(strike_dates) >= challenge.strikes_to_eliminate:
+        third_strike_on = strike_dates[challenge.strikes_to_eliminate - 1]
     is_out = third_strike_on is not None and challenge.is_locked(third_strike_on, today)
     if is_out:
-        strike_dates = strike_dates[:challenge.max_strikes]
+        strike_dates = strike_dates[:challenge.strikes_to_eliminate]
     return Standing(
         challenge=challenge,
         participant=participant,
@@ -109,7 +109,7 @@ def build_standing(challenge, participant, date_2_entries, last_date, today):
 
 
 def find_end(standings):
-    """The locked day that leaves one player, or none (they share the win), and the winning participants."""
+    """The locked day that leaves one participant, or none (they share the win), and the winning participants."""
     alive = len(standings)
     if alive < 2:
         return None, []
@@ -125,7 +125,7 @@ def find_end(standings):
 
 
 @dataclasses.dataclass
-class Result:
+class Scoreboard:
     challenge: object
     today: datetime.date
     standings: list
@@ -147,7 +147,7 @@ class Result:
         return next(standing for standing in self.standings if standing.participant == participant)
 
 
-def compute_result(challenge, today):
+def build_scoreboard(challenge, today):
     participants = challenge.participants \
         .filter(has_paid=True) \
         .select_related('user')
@@ -172,4 +172,4 @@ def compute_result(challenge, today):
         for standing in standings:
             standing.is_winner = standing.participant in winners
     standings.sort(key=lambda standing: (standing.status == 'out', standing.strikes, -standing.total_points))
-    return Result(challenge=challenge, today=today, standings=standings, finished_on=finished_on)
+    return Scoreboard(challenge=challenge, today=today, standings=standings, finished_on=finished_on)

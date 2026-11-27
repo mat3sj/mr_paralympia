@@ -15,21 +15,21 @@ def profile(request):
     if request.method == 'POST' and form.is_valid():
         form.save()
         messages.success(request, _('Profile saved.'))
-        response = redirect('home' if request.user.is_approved else 'pending')
+        response = redirect('home' if request.user.is_approved else 'waiting_for_approval')
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, request.user.language, max_age=365 * 24 * 3600)
         return response
     return render(request, 'accounts/profile.html', {'form': form})
 
 
 @login_required
-def pending(request):
+def waiting_for_approval(request):
     if request.user.is_approved:
         return redirect('home')
-    return render(request, 'accounts/pending.html')
+    return render(request, 'accounts/waiting_for_approval.html')
 
 
 @require_POST
-def set_language(request):
+def switch_language(request):
     language = request.POST['language']
     if language not in dict(settings.LANGUAGES):
         language = settings.LANGUAGE_CODE

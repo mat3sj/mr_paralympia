@@ -1,7 +1,7 @@
 {% extends "layouts/app.html" %}
 {% load i18n %}
-{% block title %}{% trans "Sign-up" %}{% endblock %}
-{% block heading %}# {% trans "sign-up" %}{% endblock %}
+{% block title %}{% trans "Join" %}{% endblock %}
+{% block heading %}# {% trans "join" %}{% endblock %}
 {% block subheading %}{% trans "Rules and entry fee" %}{% endblock %}
 {% block main %}
 {% if not challenge %}
@@ -10,7 +10,7 @@
 <div class="two-columns">
   <section class="card rules">
     <h2>{{ challenge.name }}</h2>
-    <p class="hint">{% blocktrans with start=challenge.start_date|date:"j. n. Y" last=challenge.last_join_date|date:"j. n. Y" %}Starts {{ start }} · sign-up until {{ last }}{% endblocktrans %}</p>
+    <p class="hint">{% blocktrans with start=challenge.start_date|date:"j. n. Y" last=challenge.last_join_date|date:"j. n. Y" %}Starts {{ start }} · joining until {{ last }}{% endblocktrans %}</p>
     <div class="rules-text">{{ challenge.rules }}</div>
     <table class="exercise-table">
       {% for exercise in exercises %}
@@ -28,7 +28,7 @@
       <p>{% trans "Payment confirmed. Good luck!" %}</p>
       <a class="btn primary wide" href="{% url 'day' %}">{% trans "Go to my day" %}</a>
     {% elif is_closed %}
-      <span class="pill neutral">{% trans "Sign-up closed" %}</span>
+      <span class="pill neutral">{% trans "Joining closed" %}</span>
       <p>{% blocktrans with date=challenge.last_join_date|date:"j. n. Y" %}Joining was possible until {{ date }}. See you at the next challenge.{% endblocktrans %}</p>
     {% else %}
       <b>{% trans "Entry fee" %}</b>

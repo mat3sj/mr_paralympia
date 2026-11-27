@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 AVATAR_COLORS = ['#1164a3', '#e01e5a', '#2bac76', '#8a3ffc', '#d97706', '#0f766e', '#b45309']
 
 
-def photo_path(user, filename):
+def random_photo_path(user, filename):
     return f'photos/{secrets.token_urlsafe(16)}.webp'
 
 
@@ -49,7 +49,7 @@ class User(AbstractUser):
     hometown = models.CharField(_('where I am from'), max_length=100, blank=True)
     job = models.CharField(_('job'), max_length=100, blank=True)
     hobbies = models.CharField(_('hobbies'), max_length=300, blank=True)
-    photo = models.ImageField(_('photo'), upload_to=photo_path, blank=True)
+    photo = models.ImageField(_('photo'), upload_to=random_photo_path, blank=True)
     language = models.CharField(_('language'), max_length=2, choices=LANGUAGE_CHOICES, default='cs')
     is_approved = models.BooleanField(_('approved'), default=False)
 
@@ -75,3 +75,7 @@ class User(AbstractUser):
     @property
     def has_complete_profile(self):
         return bool(self.first_name and self.last_name and self.birth_year)
+
+    @property
+    def has_app_access(self):
+        return self.is_staff or (self.is_approved and self.has_complete_profile)

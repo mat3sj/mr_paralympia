@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-27 20:27+0100\n"
+"POT-Creation-Date: 2026-11-27 20:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
-#: accounts/forms.py:36
+#: accounts/emails.py:10
+msgid "Mr. Paralympia: your account is approved"
+msgstr "Mr. Paralympia: tvůj účet je schválený"
+
+#: accounts/emails.py:11
+#, python-format
+msgid "An admin approved your account. Sign in here: %(url)s"
+msgstr "Admin schválil tvůj účet. Přihlas se tady: %(url)s"
+
+#: accounts/forms.py:37
 msgid "The anti-bot check failed. Reload the page and try again."
 msgstr ""
 "Ověření proti botům se nepovedlo. Načti stránku znovu a zkus to ještě "
 "jednou."
 
-#: accounts/forms.py:66
+#: accounts/forms.py:70
 msgid "Enter a real year of birth."
 msgstr "Zadej skutečný rok narození."
 
@@ -89,7 +98,8 @@ msgid "days a record stays editable"
 msgstr "kolik dní jde záznam upravit"
 
 #: challenges/models.py:16
-msgid "strikes that eliminate a player"
+#| msgid "strikes that eliminate a player"
+msgid "strikes that eliminate a participant"
 msgstr "počet striků do vyřazení"
 
 #: challenges/models.py:17
@@ -108,72 +118,66 @@ msgstr "pravidla česky"
 msgid "rules in English"
 msgstr "pravidla anglicky"
 
-#: challenges/models.py:77
+#: challenges/models.py:82
 msgid "repetitions"
 msgstr "opakování"
 
-#: challenges/models.py:78
+#: challenges/models.py:83
 msgid "kilometres"
 msgstr "kilometry"
 
-#: challenges/models.py:82
+#: challenges/models.py:87
 msgid "name in Czech"
 msgstr "název česky"
 
-#: challenges/models.py:83
+#: challenges/models.py:88
 msgid "name in English"
 msgstr "název anglicky"
 
-#: challenges/models.py:84
+#: challenges/models.py:89
 msgid "points per unit"
 msgstr "body za jednotku"
 
-#: challenges/models.py:85
+#: challenges/models.py:90
 msgid "unit"
 msgstr "jednotka"
 
-#: challenges/models.py:86
+#: challenges/models.py:91
 msgid "order"
 msgstr "pořadí"
 
-#: challenges/models.py:106
+#: challenges/models.py:107
 msgid "paid"
 msgstr "zaplaceno"
 
-#: challenges/models.py:107
+#: challenges/models.py:108
 msgid "paid at"
 msgstr "zaplaceno dne"
 
-#: challenges/models.py:123
+#: challenges/models.py:124
 msgid "date"
 msgstr "datum"
 
-#: challenges/models.py:124
+#: challenges/models.py:125
 msgid "amount"
 msgstr "množství"
 
-#: challenges/views.py:158
+#: challenges/views.py:153
+#| msgid ""
+#| "You signed up. Pay the entry fee; you can log exercise once an admin "
+#| "confirms it."
 msgid ""
-"You signed up. Pay the entry fee; you can log exercise once an admin "
-"confirms it."
+"You joined. Pay the entry fee; you can log exercise once an admin confirms "
+"it."
 msgstr ""
 "Jsi přihlášený. Zaplať startovné, zapisovat můžeš, jakmile ho admin potvrdí."
 
-#: challenges/views.py:174
-msgid "Mr. Paralympia: your account is approved"
-msgstr "Mr. Paralympia: tvůj účet je schválený"
-
-#: challenges/views.py:175
-#, python-format
-msgid "An admin approved your account. Sign in here: %(url)s"
-msgstr "Admin schválil tvůj účet. Přihlas se tady: %(url)s"
-
-#: challenges/views.py:193
+#: challenges/views.py:176
 #, python-format
 msgid "%(user)s approved."
 msgstr "%(user)s schválen."
 
-#: challenges/views.py:197
+#: challenges/views.py:180
 #, python-format
 msgid "Registration %(email)s deleted."
 msgstr "Registrace %(email)s smazána."
@@ -235,28 +239,6 @@ msgstr "Po registraci potvrdíš e-mail a počkáš, až tě admin schválí."
 #, python-format
 msgid "Already have an account? <a href=\"%(login_url)s\">Sign in</a>."
 msgstr "Už máš účet? <a href=\"%(login_url)s\">Přihlas se</a>."
-
-#: templates/accounts/pending.html:3
-#: templates/challenges/manage_participants.html:14
-msgid "Waiting for approval"
-msgstr "Čekají na schválení"
-
-#: templates/accounts/pending.html:5
-msgid "Almost there"
-msgstr "Skoro hotovo"
-
-#: templates/accounts/pending.html:6
-msgid ""
-"An admin has to approve your account. You will get an email once it happens."
-msgstr "Tvůj účet musí schválit admin. Až se to stane, přijde ti e-mail."
-
-#: templates/accounts/pending.html:7
-msgid "Edit profile"
-msgstr "Upravit profil"
-
-#: templates/accounts/pending.html:8 templates/layouts/app.html:24
-msgid "Sign out"
-msgstr "Odhlásit"
 
 #: templates/accounts/profile.html:3 templates/layouts/app.html:41
 msgid "Profile"
@@ -325,6 +307,29 @@ msgstr "Uloží se k účtu. Nastavení prohlížeče ani systému se nebere v p
 #: templates/accounts/profile.html:37
 msgid "Save profile"
 msgstr "Uložit profil"
+
+#: templates/accounts/waiting_for_approval.html:3
+#: templates/challenges/manage_participants.html:14
+msgid "Waiting for approval"
+msgstr "Čekají na schválení"
+
+#: templates/accounts/waiting_for_approval.html:5
+msgid "Almost there"
+msgstr "Skoro hotovo"
+
+#: templates/accounts/waiting_for_approval.html:6
+msgid ""
+"An admin has to approve your account. You will get an email once it happens."
+msgstr "Tvůj účet musí schválit admin. Až se to stane, přijde ti e-mail."
+
+#: templates/accounts/waiting_for_approval.html:7
+msgid "Edit profile"
+msgstr "Upravit profil"
+
+#: templates/accounts/waiting_for_approval.html:8
+#: templates/layouts/app.html:24
+msgid "Sign out"
+msgstr "Odhlásit"
 
 #: templates/challenges/_day_panel.html:5
 msgid "The challenge is over."
@@ -575,11 +580,11 @@ msgid "my-day"
 msgstr "můj-den"
 
 #: templates/challenges/join.html:3 templates/layouts/app.html:40
-msgid "Sign-up"
+msgid "Join"
 msgstr "Přihláška"
 
 #: templates/challenges/join.html:4 templates/layouts/app.html:12
-msgid "sign-up"
+msgid "join"
 msgstr "přihláška"
 
 #: templates/challenges/join.html:5
@@ -592,7 +597,8 @@ msgstr "Zatím není založená žádná výzva."
 
 #: templates/challenges/join.html:13
 #, python-format
-msgid "Starts %(start)s · sign-up until %(last)s"
+#| msgid "Starts %(start)s · sign-up until %(last)s"
+msgid "Starts %(start)s · joining until %(last)s"
 msgstr "Začíná %(start)s · přihlášky do %(last)s"
 
 #: templates/challenges/join.html:19
@@ -613,7 +619,8 @@ msgid "Go to my day"
 msgstr "Na můj den"
 
 #: templates/challenges/join.html:31
-msgid "Sign-up closed"
+#| msgid "Sign-up closed"
+msgid "Joining closed"
 msgstr "Přihlášky uzavřeny"
 
 #: templates/challenges/join.html:32
@@ -720,7 +727,7 @@ msgid "VS"
 msgstr "VS"
 
 #: templates/challenges/manage_participants.html:40
-msgid "Signed up"
+msgid "Joined"
 msgstr "Přihlášen"
 
 #: templates/challenges/manage_participants.html:40
@@ -729,7 +736,8 @@ msgid "Paid"
 msgstr "Zaplaceno"
 
 #: templates/challenges/manage_participants.html:55
-msgid "Nobody has signed up yet."
+#| msgid "Nobody has signed up yet."
+msgid "Nobody has joined yet."
 msgstr "Zatím se nikdo nepřihlásil."
 
 #: templates/challenges/not_started.html:8

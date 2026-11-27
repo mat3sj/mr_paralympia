@@ -4,57 +4,52 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
-from django.utils import timezone, translation
+from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from accounts.emails import send_approval_email
 from challenges.forms import DayForm
 from challenges.models import Challenge, Participant
 from challenges.payments import payment_message, payment_qr_svg
-from challenges.standings import compute_result, date_range
-
-
-def get_paid_participant(challenge, user):
-    participant = challenge.participant_for(user) if challenge else None
-    return participant if participant and participant.has_paid else None
+from challenges.standings import build_scoreboard, date_range
 
 
 @login_required
 def home(request):
-    if get_paid_participant(Challenge.current(), request.user):
+    challenge = Challenge.current()
+    if challenge and challenge.paid_participant_for(request.user):
         return redirect('day')
     return redirect('join')
 
 
-def pick_date(date_text, challenge, result):
+def requested_date(date_text, challenge, scoreboard):
     if not date_text:
-        return result.last_date
+        return scoreboard.last_date
     try:
         date = datetime.date.fromisoformat(date_text)
     except ValueError:
         raise Http404
-    return min(max(date, challenge.start_date), result.last_date)
+    return min(max(date, challenge.start_date), scoreboard.last_date)
 
 
-def day_context(result, form):
-    challenge = result.challenge
+def day_context(scoreboard, form):
+    challenge = scoreboard.challenge
     standing = form.standing
     date = form.date
     points = standing.points_on(date)
     minimum = challenge.minimum_points(date)
     exercise_id_2_points = {entry.exercise_id: entry.points for entry in standing.date_2_entries.get(date, [])}
-    first_chip_date = max(challenge.start_date, result.today - datetime.timedelta(days=challenge.edit_days + 1))
+    first_chip_date = max(challenge.start_date, scoreboard.today - datetime.timedelta(days=challenge.edit_days + 1))
     return {
         'challenge': challenge,
-        'result': result,
+        'scoreboard': scoreboard,
         'standing': standing,
         'date': date,
         'day_number': challenge.day_number(date),
-        'today': result.today,
-        'is_editable': result.is_editable(date),
+        'today': scoreboard.today,
+        'is_editable': scoreboard.is_editable(date),
         'last_edit_date': challenge.last_edit_date(date),
         'form': form,
         'rows': [
@@ -68,10 +63,10 @@ def day_context(result, form):
         'chips': [
             {
                 'date': chip_date,
-                'is_locked': challenge.is_locked(chip_date, result.today),
+                'is_locked': challenge.is_locked(chip_date, scoreboard.today),
                 'is_done': standing.has_minimum_on(chip_date),
             }
-            for chip_date in date_range(first_chip_date, result.last_date)
+            for chip_date in date_range(first_chip_date, scoreboard.last_date)
         ],
         'points': points,
         'minimum': minimum,
@@ -84,27 +79,27 @@ def day_context(result, form):
 @login_required
 def day(request, date_text=''):
     challenge = Challenge.current()
-    participant = get_paid_participant(challenge, request.user)
+    participant = challenge.paid_participant_for(request.user) if challenge else None
     if participant is None:
         return redirect('join')
     today = timezone.localdate()
     if today < challenge.start_date:
         return render(request, 'challenges/not_started.html', {'challenge': challenge})
 
-    result = compute_result(challenge, today)
-    date = pick_date(date_text, challenge, result)
-    is_editable = result.is_editable(date)
+    scoreboard = build_scoreboard(challenge, today)
+    date = requested_date(date_text, challenge, scoreboard)
+    is_editable = scoreboard.is_editable(date)
     is_htmx = bool(request.headers.get('HX-Request'))
-    form = DayForm(request.POST or None, standing=result.standing_of(participant), date=date, disabled=not is_editable)
+    form = DayForm(request.POST or None, standing=scoreboard.standing_of(participant), date=date, disabled=not is_editable)
     if request.method == 'POST' and is_editable and form.is_valid():
         form.save()
         if not is_htmx:
             return redirect('day', date_text=date.isoformat())
-        result = compute_result(challenge, today)
-        form = DayForm(standing=result.standing_of(participant), date=date, disabled=False)
+        scoreboard = build_scoreboard(challenge, today)
+        form = DayForm(standing=scoreboard.standing_of(participant), date=date, disabled=False)
 
     template = 'challenges/_day_panel.html' if is_htmx else 'challenges/day.html'
-    return render(request, template, day_context(result, form))
+    return render(request, template, day_context(scoreboard, form))
 
 
 @login_required
@@ -112,16 +107,16 @@ def board(request):
     challenge = Challenge.current()
     if challenge is None:
         return redirect('join')
-    result = compute_result(challenge, timezone.localdate())
+    scoreboard = build_scoreboard(challenge, timezone.localdate())
     columns = [
         {
             'date': date,
             'day_number': challenge.day_number(date),
             'minimum': challenge.minimum_points(date),
-            'is_locked': challenge.is_locked(date, result.today),
+            'is_locked': challenge.is_locked(date, scoreboard.today),
             'last_edit_date': challenge.last_edit_date(date),
         }
-        for date in date_range(challenge.start_date, result.last_date)
+        for date in date_range(challenge.start_date, scoreboard.last_date)
     ]
     rows = [
         {
@@ -129,18 +124,18 @@ def board(request):
             'cells': [
                 {
                     'column': column,
-                    'state': standing.state_on(column['date']),
+                    'state': standing.day_state(column['date']),
                     'points': standing.points_on(column['date']),
                     'entries': standing.date_2_entries.get(column['date'], []),
                 }
                 for column in columns
             ],
         }
-        for standing in result.standings
+        for standing in scoreboard.standings
     ]
     return render(request, 'challenges/board.html', {
         'challenge': challenge,
-        'result': result,
+        'scoreboard': scoreboard,
         'columns': columns,
         'rows': rows,
     })
@@ -155,7 +150,7 @@ def join(request):
     can_join = participant is None and timezone.localdate() <= challenge.last_join_date
     if request.method == 'POST' and can_join:
         Participant.objects.create(challenge=challenge, user=request.user)
-        messages.success(request, _('You signed up. Pay the entry fee; you can log exercise once an admin confirms it.'))
+        messages.success(request, _('You joined. Pay the entry fee; you can log exercise once an admin confirms it.'))
         return redirect('join')
     return render(request, 'challenges/join.html', {
         'challenge': challenge,
@@ -166,18 +161,6 @@ def join(request):
         'qr_svg': payment_qr_svg(challenge, request.user),
         'payment_message': payment_message(challenge, request.user),
     })
-
-
-def send_approval_email(request, user):
-    with translation.override(user.language):
-        send_mail(
-            _('Mr. Paralympia: your account is approved'),
-            _('An admin approved your account. Sign in here: %(url)s') % {
-                'url': request.build_absolute_uri(reverse('home')),
-            },
-            None,
-            [user.email],
-        )
 
 
 @staff_member_required
@@ -210,7 +193,7 @@ def manage_participants(request):
     paid_count = sum(participant.has_paid for participant in participants)
     return render(request, 'challenges/manage_participants.html', {
         'challenge': challenge,
-        'pending_users': get_user_model().objects.waiting_for_approval(),
+        'users_waiting_for_approval': get_user_model().objects.waiting_for_approval(),
         'participants': participants,
         'paid_count': paid_count,
         'collected': paid_count * challenge.entry_fee if challenge else 0,

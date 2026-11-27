@@ -9,11 +9,11 @@ from django.utils.translation import gettext_lazy as _
 class Challenge(models.Model):
     name = models.CharField(_('name'), max_length=100)
     start_date = models.DateField(_('start date'))
-    base_points = models.PositiveIntegerField(_('minimum on the first day'), default=10)
-    daily_increment = models.PositiveIntegerField(_('daily increase of the minimum'), default=5)
+    first_day_minimum = models.PositiveIntegerField(_('minimum on the first day'), default=10)
+    minimum_increment = models.PositiveIntegerField(_('daily increase of the minimum'), default=5)
     adaptation_days = models.PositiveIntegerField(_('adaptation days without strikes'), default=10)
     edit_days = models.PositiveIntegerField(_('days a record stays editable'), default=5)
-    max_strikes = models.PositiveIntegerField(_('strikes that eliminate a player'), default=3)
+    strikes_to_eliminate = models.PositiveIntegerField(_('strikes that eliminate a participant'), default=3)
     entry_fee = models.PositiveIntegerField(_('entry fee (CZK)'))
     bank_account = models.CharField(_('bank account'), max_length=30, help_text='Czech format, e.g. 670100-2210457032/6210')
     rules_cs = models.TextField(_('rules in Czech'))
@@ -37,7 +37,7 @@ class Challenge(models.Model):
         return self.start_date + datetime.timedelta(days=day_number - 1)
 
     def minimum_points(self, date):
-        return self.base_points + self.daily_increment * (self.day_number(date) - 1)
+        return self.first_day_minimum + self.minimum_increment * (self.day_number(date) - 1)
 
     @property
     def first_strike_date(self):
@@ -45,7 +45,7 @@ class Challenge(models.Model):
 
     @property
     def last_join_date(self):
-        """Late players can still back-fill the first day that counts for strikes."""
+        """Late participants can still back-fill the first day that counts for strikes."""
         return self.date_of_day(self.adaptation_days + self.edit_days)
 
     def last_edit_date(self, date):
@@ -57,6 +57,11 @@ class Challenge(models.Model):
     def participant_for(self, user):
         return self.participants \
             .filter(user=user) \
+            .first()
+
+    def paid_participant_for(self, user):
+        return self.participants \
+            .filter(user=user, has_paid=True) \
             .first()
 
     @property
@@ -94,10 +99,6 @@ class Exercise(models.Model):
     @property
     def name(self):
         return self.name_en if get_language() == 'en' else self.name_cs
-
-    @property
-    def step(self):
-        return '0.1' if self.unit == 'km' else '1'
 
 
 class Participant(models.Model):

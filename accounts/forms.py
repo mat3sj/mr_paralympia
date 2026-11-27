@@ -27,6 +27,8 @@ def is_turnstile_token_valid(token):
 
 
 class SignupForm(AllauthSignupForm):
+    turnstile_site_key = settings.TURNSTILE_SITE_KEY
+
     def clean(self):
         cleaned_data = super().clean()
         if settings.TURNSTILE_SECRET_KEY:

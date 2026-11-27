@@ -4,6 +4,6 @@ from accounts import views
 
 urlpatterns = [
     path('profile/', views.profile, name='profile'),
-    path('pending/', views.pending, name='pending'),
-    path('language/', views.set_language, name='set_language'),
+    path('waiting-for-approval/', views.waiting_for_approval, name='waiting_for_approval'),
+    path('language/', views.switch_language, name='switch_language'),
 ]

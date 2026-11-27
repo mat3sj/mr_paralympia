@@ -1,9 +1,9 @@
 {% load i18n %}
 <div id="day-panel" class="stack">
-  {% if result.finished_on %}
+  {% if scoreboard.finished_on %}
     <div class="card banner win">
       <b>{% trans "The challenge is over." %}</b>
-      <span class="hint">{% trans "Winners:" %} {% for winner in result.winners %}{{ winner.participant.user }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+      <span class="hint">{% trans "Winners:" %} {% for winner in scoreboard.winners %}{{ winner.participant.user }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
     </div>
   {% endif %}
 

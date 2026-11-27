@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-27 20:27+0100\n"
+"POT-Creation-Date: 2026-11-27 20:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,20 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/forms.py:36
+#: accounts/emails.py:10
+msgid "Mr. Paralympia: your account is approved"
+msgstr ""
+
+#: accounts/emails.py:11
+#, python-format
+msgid "An admin approved your account. Sign in here: %(url)s"
+msgstr ""
+
+#: accounts/forms.py:37
 msgid "The anti-bot check failed. Reload the page and try again."
 msgstr ""
 
-#: accounts/forms.py:66
+#: accounts/forms.py:70
 msgid "Enter a real year of birth."
 msgstr ""
 
@@ -87,7 +96,7 @@ msgid "days a record stays editable"
 msgstr ""
 
 #: challenges/models.py:16
-msgid "strikes that eliminate a player"
+msgid "strikes that eliminate a participant"
 msgstr ""
 
 #: challenges/models.py:17
@@ -106,71 +115,62 @@ msgstr ""
 msgid "rules in English"
 msgstr ""
 
-#: challenges/models.py:77
+#: challenges/models.py:82
 msgid "repetitions"
 msgstr ""
 
-#: challenges/models.py:78
+#: challenges/models.py:83
 msgid "kilometres"
 msgstr ""
 
-#: challenges/models.py:82
+#: challenges/models.py:87
 msgid "name in Czech"
 msgstr ""
 
-#: challenges/models.py:83
+#: challenges/models.py:88
 msgid "name in English"
 msgstr ""
 
-#: challenges/models.py:84
+#: challenges/models.py:89
 msgid "points per unit"
 msgstr ""
 
-#: challenges/models.py:85
+#: challenges/models.py:90
 msgid "unit"
 msgstr ""
 
-#: challenges/models.py:86
+#: challenges/models.py:91
 msgid "order"
 msgstr ""
 
-#: challenges/models.py:106
+#: challenges/models.py:107
 msgid "paid"
 msgstr ""
 
-#: challenges/models.py:107
+#: challenges/models.py:108
 msgid "paid at"
 msgstr ""
 
-#: challenges/models.py:123
+#: challenges/models.py:124
 msgid "date"
 msgstr ""
 
-#: challenges/models.py:124
+#: challenges/models.py:125
 msgid "amount"
 msgstr ""
 
-#: challenges/views.py:158
+#: challenges/views.py:153
 msgid ""
-"You signed up. Pay the entry fee; you can log exercise once an admin "
-"confirms it."
+"You joined. Pay the entry fee; you can log exercise once an admin confirms "
+"it."
 msgstr ""
 
-#: challenges/views.py:174
-msgid "Mr. Paralympia: your account is approved"
-msgstr ""
-
-#: challenges/views.py:175
-#, python-format
-msgid "An admin approved your account. Sign in here: %(url)s"
-msgstr ""
-
-#: challenges/views.py:193
+#: challenges/views.py:176
 #, python-format
 msgid "%(user)s approved."
 msgstr ""
 
-#: challenges/views.py:197
+#: challenges/views.py:180
 #, python-format
 msgid "Registration %(email)s deleted."
 msgstr ""
@@ -222,34 +222,13 @@ msgstr ""
 
 #: templates/account/signup.html:18
 msgid ""
-"After signing up you confirm your email and wait until an admin approves you."
+"After signing up you confirm your email and wait until an admin approves "
+"you."
 msgstr ""
 
 #: templates/account/signup.html:19
 #, python-format
 msgid "Already have an account? <a href=\"%(login_url)s\">Sign in</a>."
-msgstr ""
-
-#: templates/accounts/pending.html:3
-#: templates/challenges/manage_participants.html:14
-msgid "Waiting for approval"
-msgstr ""
-
-#: templates/accounts/pending.html:5
-msgid "Almost there"
-msgstr ""
-
-#: templates/accounts/pending.html:6
-msgid ""
-"An admin has to approve your account. You will get an email once it happens."
-msgstr ""
-
-#: templates/accounts/pending.html:7
-msgid "Edit profile"
-msgstr ""
-
-#: templates/accounts/pending.html:8 templates/layouts/app.html:24
-msgid "Sign out"
 msgstr ""
 
 #: templates/accounts/profile.html:3 templates/layouts/app.html:41
@@ -316,6 +295,29 @@ msgstr ""
 
 #: templates/accounts/profile.html:37
 msgid "Save profile"
+msgstr ""
+
+#: templates/accounts/waiting_for_approval.html:3
+#: templates/challenges/manage_participants.html:14
+msgid "Waiting for approval"
+msgstr ""
+
+#: templates/accounts/waiting_for_approval.html:5
+msgid "Almost there"
+msgstr ""
+
+#: templates/accounts/waiting_for_approval.html:6
+msgid ""
+"An admin has to approve your account. You will get an email once it happens."
+msgstr ""
+
+#: templates/accounts/waiting_for_approval.html:7
+msgid "Edit profile"
+msgstr ""
+
+#: templates/accounts/waiting_for_approval.html:8
+#: templates/layouts/app.html:24
+msgid "Sign out"
 msgstr ""
 
 #: templates/challenges/_day_panel.html:5
@@ -550,8 +552,8 @@ msgstr ""
 
 #: templates/challenges/board.html:106
 msgid ""
-"Each column is a day with its minimum. Hover over a number for the breakdown "
-"and over a name for the profile (on a phone, tap)."
+"Each column is a day with its minimum. Hover over a number for the breakdown"
+" and over a name for the profile (on a phone, tap)."
 msgstr ""
 
 #: templates/challenges/day.html:3 templates/challenges/not_started.html:3
@@ -565,11 +567,11 @@ msgid "my-day"
 msgstr ""
 
 #: templates/challenges/join.html:3 templates/layouts/app.html:40
-msgid "Sign-up"
+msgid "Join"
 msgstr ""
 
 #: templates/challenges/join.html:4 templates/layouts/app.html:12
-msgid "sign-up"
+msgid "join"
 msgstr ""
 
 #: templates/challenges/join.html:5
@@ -582,7 +584,7 @@ msgstr ""
 
 #: templates/challenges/join.html:13
 #, python-format
-msgid "Starts %(start)s · sign-up until %(last)s"
+msgid "Starts %(start)s · joining until %(last)s"
 msgstr ""
 
 #: templates/challenges/join.html:19
@@ -603,7 +605,7 @@ msgid "Go to my day"
 msgstr ""
 
 #: templates/challenges/join.html:31
-msgid "Sign-up closed"
+msgid "Joining closed"
 msgstr ""
 
 #: templates/challenges/join.html:32
@@ -707,7 +709,7 @@ msgid "VS"
 msgstr ""
 
 #: templates/challenges/manage_participants.html:40
-msgid "Signed up"
+msgid "Joined"
 msgstr ""
 
 #: templates/challenges/manage_participants.html:40
@@ -716,7 +718,7 @@ msgid "Paid"
 msgstr ""
 
 #: templates/challenges/manage_participants.html:55
-msgid "Nobody has signed up yet."
+msgid "Nobody has joined yet."
 msgstr ""
 
 #: templates/challenges/not_started.html:8

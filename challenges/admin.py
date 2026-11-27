@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.utils import timezone
 
 from challenges.models import Challenge, Entry, Exercise, Participant
-from challenges.standings import compute_result
+from challenges.standings import build_scoreboard
 
 
 class ChallengeForm(forms.ModelForm):
@@ -14,7 +14,7 @@ class ChallengeForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         current = Challenge.current()
-        if self.instance.pk is None and current and not compute_result(current, timezone.localdate()).finished_on:
+        if self.instance.pk is None and current and not build_scoreboard(current, timezone.localdate()).finished_on:
             raise forms.ValidationError(f'{current} is still running. Only one challenge can run at a time.')
         return cleaned_data
 

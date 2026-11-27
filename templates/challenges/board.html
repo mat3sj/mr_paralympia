@@ -5,10 +5,10 @@
 {% block subheading %}{{ challenge.name }}{% if columns %}{% with column=columns|last %} · {% blocktrans with number=column.day_number minimum=column.minimum %}day {{ number }}, minimum {{ minimum }} pts{% endblocktrans %}{% endwith %}{% endif %}{% endblock %}
 {% block main %}
 <div class="stack">
-  {% if result.finished_on %}
+  {% if scoreboard.finished_on %}
     <div class="card banner win">
-      <b>{% blocktrans with date=result.finished_on|date:"j. n. Y" %}The challenge ended on {{ date }}.{% endblocktrans %}</b>
-      <span>{% trans "Winners:" %} {% for winner in result.winners %}<b>{{ winner.participant.user }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+      <b>{% blocktrans with date=scoreboard.finished_on|date:"j. n. Y" %}The challenge ended on {{ date }}.{% endblocktrans %}</b>
+      <span>{% trans "Winners:" %} {% for winner in scoreboard.winners %}<b>{{ winner.participant.user }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
     </div>
   {% endif %}
 
@@ -30,7 +30,7 @@
             <th class="who">{% trans "Player" %}</th>
             <th>{% trans "Strikes" %}</th>
             {% for column in columns %}
-              <th class="{% if column.date == result.today %}today{% endif %}" title="{{ column.date|date:'j. n.' }}">{{ column.day_number }}.<br>{{ column.minimum }}</th>
+              <th class="{% if column.date == scoreboard.today %}today{% endif %}" title="{{ column.date|date:'j. n.' }}">{{ column.day_number }}.<br>{{ column.minimum }}</th>
             {% endfor %}
             <th style="padding:8px 12px;text-align:right">{% trans "Total" %}</th>
             <th style="padding:8px 10px;text-align:left">{% trans "Status" %}</th>
@@ -92,7 +92,7 @@
               <td class="sum">{{ standing.total_points|floatformat:"0g" }}</td>
               <td class="st">
                 {% if standing.status == 'winner' %}<span class="pill ok">{% trans "winner" %}</span>
-                {% elif standing.status == 'out' %}<span class="pill neutral">{% blocktrans with number=standing.out_on_day %}out on day {{ number }}{% endblocktrans %}</span>
+                {% elif standing.status == 'out' %}<span class="pill neutral">{% blocktrans with number=standing.third_strike_day_number %}out on day {{ number }}{% endblocktrans %}</span>
                 {% elif standing.status == 'being_eliminated' %}<span class="pill bad">{% trans "being eliminated" %}</span>
                 {% elif standing.status == 'at_risk' %}<span class="pill warn">{% trans "at risk" %}</span>
                 {% else %}<span class="pill ok">{% trans "playing" %}</span>{% endif %}
