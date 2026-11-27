@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Profile" %}{% endblock %}
+{% block heading %}@ {% trans "profile" %}{% endblock %}
+{% block subheading %}{% trans "What the others will see about you" %}{% endblock %}
+{% block main %}
+{% if not user.has_complete_profile %}
+  <h1>{% trans "Tell the others who you are" %}</h1>
+  <p class="hint">{% trans "Name and year of birth are required. The rest shows up when someone hovers over your name." %}</p>
+{% endif %}
+<form class="form" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="upload">
+    {% include "partials/avatar.html" with large=True %}
+    <div class="field">
+      <label for="{{ form.photo.id_for_label }}">{% trans "Photo" %}</label>
+      {{ form.photo }}
+      <span class="hint">{% trans "Any size. We store it cropped to 400 × 400 px." %}</span>
+      {{ form.photo.errors }}
+    </div>
+  </div>
+  <div class="two-fields">
+    <div class="field"><label for="{{ form.first_name.id_for_label }}">{% trans "First name" %} <span class="required">*</span></label>{{ form.first_name }}{{ form.first_name.errors }}</div>
+    <div class="field"><label for="{{ form.last_name.id_for_label }}">{% trans "Last name" %} <span class="required">*</span></label>{{ form.last_name }}{{ form.last_name.errors }}</div>
+  </div>
+  <div class="two-fields">
+    <div class="field"><label for="{{ form.birth_year.id_for_label }}">{% trans "Year of birth" %} <span class="required">*</span></label>{{ form.birth_year }}{{ form.birth_year.errors }}</div>
+    <div class="field"><label for="{{ form.hometown.id_for_label }}">{% trans "Where I am from" %}</label>{{ form.hometown }}{{ form.hometown.errors }}</div>
+  </div>
+  <div class="field"><label for="{{ form.job.id_for_label }}">{% trans "Job" %}</label>{{ form.job }}{{ form.job.errors }}</div>
+  <div class="field"><label for="{{ form.hobbies.id_for_label }}">{% trans "Hobbies" %}</label>{{ form.hobbies }}{{ form.hobbies.errors }}</div>
+  <div class="field">
+    <label for="{{ form.language.id_for_label }}">{% trans "Language" %}</label>{{ form.language }}
+    <span class="hint">{% trans "Saved to your account. Browser and system settings are ignored." %}</span>
+  </div>
+  <div><button class="btn primary" type="submit">{% trans "Save profile" %}</button></div>
+</form>
+{% endblock %}

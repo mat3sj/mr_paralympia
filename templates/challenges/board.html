@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Board" %}{% endblock %}
+{% block heading %}# {% trans "board" %}{% endblock %}
+{% block subheading %}{{ challenge.name }}{% if columns %}{% with column=columns|last %} · {% blocktrans with number=column.day_number minimum=column.minimum %}day {{ number }}, minimum {{ minimum }} pts{% endblocktrans %}{% endwith %}{% endif %}{% endblock %}
+{% block main %}
+<div class="stack">
+  {% if result.finished_on %}
+    <div class="card banner win">
+      <b>{% blocktrans with date=result.finished_on|date:"j. n. Y" %}The challenge ended on {{ date }}.{% endblocktrans %}</b>
+      <span>{% trans "Winners:" %} {% for winner in result.winners %}<b>{{ winner.participant.user }}</b>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+    </div>
+  {% endif %}
+
+  {% if not columns %}
+    <div class="card banner"><b>{% blocktrans with date=challenge.start_date|date:"j. n. Y" %}The challenge starts on {{ date }}.{% endblocktrans %}</b></div>
+  {% elif not rows %}
+    <div class="card banner"><b>{% trans "Nobody with a confirmed payment yet." %}</b></div>
+  {% else %}
+    <div class="legend">
+      <span><i style="background:var(--ok-bg);box-shadow:inset 0 0 0 1px var(--ok)"></i>{% trans "done" %}</span>
+      <span><i style="background:var(--cell)"></i>{% trans "missed in adaptation (no strike)" %}</span>
+      <span><i style="background:var(--danger-bg);box-shadow:inset 0 0 0 1px var(--danger)"></i>{% trans "strike" %}</span>
+      <span><i style="box-shadow:inset 0 0 0 2px var(--link)"></i>{% trans "today (still running)" %}</span>
+    </div>
+    <div class="table-scroll">
+      <table class="board">
+        <thead>
+          <tr>
+            <th class="who">{% trans "Player" %}</th>
+            <th>{% trans "Strikes" %}</th>
+            {% for column in columns %}
+              <th class="{% if column.date == today %}today{% endif %}" title="{{ column.date|date:'j. n.' }}">{{ column.day_number }}.<br>{{ column.minimum }}</th>
+            {% endfor %}
+            <th style="padding:8px 12px;text-align:right">{% trans "Total" %}</th>
+            <th style="padding:8px 10px;text-align:left">{% trans "Status" %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+            <tr class="{% if row.standing.is_out and not row.is_winner %}out{% endif %}">
+              <td class="who">
+                <button type="button" data-tip>
+                  {% include "partials/avatar.html" with user=row.user %}
+                  <span><b>{{ row.user }}</b><small>{{ row.user.hometown }}</small></span>
+                  <template class="tip-content">
+                    <div class="bio">
+                      {% include "partials/avatar.html" with user=row.user %}
+                      <div><h4>{{ row.user }}</h4><span class="hint">{% blocktrans with year=row.user.birth_year %}born {{ year }}{% endblocktrans %}</span></div>
+                    </div>
+                    <dl>
+                      <dt>{% trans "From" %}</dt><dd>{{ row.user.hometown|default:"–" }}</dd>
+                      <dt>{% trans "Job" %}</dt><dd>{{ row.user.job|default:"–" }}</dd>
+                      <dt>{% trans "Hobbies" %}</dt><dd>{{ row.user.hobbies|default:"–" }}</dd>
+                    </dl>
+                  </template>
+                </button>
+              </td>
+              <td class="st"><span class="strikes" aria-label="{{ row.standing.strikes }}">{% for is_on in row.strike_dots %}<i class="{% if is_on %}on{% endif %}"></i>{% endfor %}</span></td>
+              {% for cell in row.cells %}
+                <td class="c">
+                  {% if cell.state == 'none' %}
+                    <span class="cell none">·</span>
+                  {% else %}
+                    <button type="button" class="cell {{ cell.state }}" data-tip>
+                      {% if cell.entries %}{{ cell.points|floatformat:"0" }}{% else %}–{% endif %}
+                      <template class="tip-content">
+                        <h4>{{ row.user }} · {% blocktrans with number=cell.day_number %}day {{ number }}{% endblocktrans %} ({{ cell.date|date:"j. n." }})</h4>
+                        {% if cell.entries %}
+                          <table>
+                            {% for entry in cell.entries %}
+                              <tr><td>{{ entry.exercise.name }} {{ entry.amount|floatformat:"-1" }}{% if entry.exercise.unit == 'km' %} km{% else %}×{% endif %}</td><td>{{ entry.points|floatformat:"-1" }}</td></tr>
+                            {% endfor %}
+                            <tr class="total"><td>{% blocktrans with minimum=cell.minimum %}Total (minimum {{ minimum }}){% endblocktrans %}</td><td>{{ cell.points|floatformat:"-1" }}</td></tr>
+                          </table>
+                        {% else %}
+                          <p class="hint">{% trans "Nothing logged." %}</p>
+                        {% endif %}
+                        {% if cell.state == 'strike' %}
+                          <p class="hint note bad">{% if cell.is_locked %}{% trans "Strike, the day is locked." %}{% else %}{% blocktrans with date=cell.unlock_until|date:"j. n. Y" %}Strike, can still be fixed until {{ date }}.{% endblocktrans %}{% endif %}</p>
+                        {% elif cell.state == 'adaptation' %}
+                          <p class="hint note">{% trans "Adaptation period, no strike." %}</p>
+                        {% elif cell.state == 'today' %}
+                          <p class="hint note">{% trans "The day is still running." %}</p>
+                        {% endif %}
+                      </template>
+                    </button>
+                  {% endif %}
+                </td>
+              {% endfor %}
+              <td class="sum">{{ row.standing.total_points|floatformat:"0g" }}</td>
+              <td class="st">
+                {% if row.is_winner %}<span class="pill ok">{% trans "winner" %}</span>
+                {% elif row.standing.is_out %}<span class="pill neutral">{% blocktrans with number=row.eliminated_day %}out on day {{ number }}{% endblocktrans %}</span>
+                {% elif row.standing.eliminated_on %}<span class="pill bad">{% trans "being eliminated" %}</span>
+                {% elif row.is_at_risk %}<span class="pill warn">{% trans "at risk" %}</span>
+                {% else %}<span class="pill ok">{% trans "playing" %}</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p class="hint">{% trans "Each column is a day with its minimum. Hover over a number for the breakdown and over a name for the profile (on a phone, tap)." %}</p>
+  {% endif %}
+</div>
+{% endblock %}

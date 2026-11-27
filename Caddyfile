@@ -1,0 +1,11 @@
+# Caddy gets and renews the HTTPS certificate for the domain by itself.
+{$DOMAIN} {
+	encode gzip
+	handle_path /media/* {
+		root * /media
+		file_server
+	}
+	handle {
+		reverse_proxy web:8000
+	}
+}

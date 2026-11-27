@@ -1,0 +1,84 @@
+{% load i18n %}
+<div id="day-panel" class="stack">
+  {% if result.finished_on %}
+    <div class="card banner win">
+      <b>{% trans "The challenge is over." %}</b>
+      <span class="hint">{% trans "Winners:" %} {% for winner in result.winners %}{{ winner.participant.user }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+    </div>
+  {% endif %}
+
+  <nav class="chips" aria-label="{% trans 'Days' %}">
+    {% for chip in chips %}
+      <a class="chip{% if chip.date == date %} on{% endif %}{% if chip.is_locked %} locked{% endif %}" href="{% url 'day' chip.date.isoformat %}">
+        <small>{% if chip.date == today %}{% trans "today" %}{% else %}{{ chip.date|date:"D" }}{% endif %}</small>
+        <b class="num">{{ chip.date|date:"j. n." }}</b>
+        {% if chip.is_locked %}<small>{% trans "locked" %}</small>{% else %}<span class="dot{% if chip.is_done %} ok{% elif chip.date == today %} today{% endif %}"></span>{% endif %}
+      </a>
+    {% endfor %}
+  </nav>
+
+  <div class="card summary">
+    <div class="summary-head">
+      <div>
+        <div class="hint">{% blocktrans with number=day_number %}Day {{ number }}{% endblocktrans %} · {{ date|date:"l j. n. Y" }}</div>
+        <div class="big num">{{ points|floatformat:"-1" }} <small>/ {{ minimum }} {% trans "pts" %}</small></div>
+      </div>
+      {% if points >= minimum %}
+        <span class="pill ok">{% blocktrans with surplus=surplus|floatformat:"-1" %}Done, +{{ surplus }} pts{% endblocktrans %}</span>
+      {% elif date == today %}
+        <span class="pill warn">{% blocktrans with missing=missing|floatformat:"-1" %}{{ missing }} pts to go{% endblocktrans %}</span>
+      {% elif is_adaptation %}
+        <span class="pill neutral">{% trans "Missed, adaptation (no strike)" %}</span>
+      {% else %}
+        <span class="pill bad">{% blocktrans with missing=missing|floatformat:"-1" %}Strike, {{ missing }} pts missing{% endblocktrans %}</span>
+      {% endif %}
+    </div>
+    <div class="bar"><i class="{% if points >= minimum %}full{% endif %}" style="width: {{ progress }}%"></i></div>
+  </div>
+
+  <form class="card{% if not is_editable %} locked-form{% endif %}" method="post" action="{% url 'day' date.isoformat %}"
+        hx-post="{% url 'day' date.isoformat %}" hx-trigger="change delay:400ms" hx-target="#day-panel" hx-swap="outerHTML">
+    {% csrf_token %}
+    {% for row in rows %}
+      <div class="exercise">
+        <label for="exercise-{{ row.exercise.id }}">
+          <b>{{ row.exercise.name }}</b>
+          <span>{% if row.exercise.unit == 'km' %}{% blocktrans with points=row.exercise.points_per_unit|floatformat:"-2" %}{{ points }} pts per km{% endblocktrans %}{% else %}{% blocktrans with points=row.exercise.points_per_unit|floatformat:"-2" %}{{ points }} pts per rep{% endblocktrans %}{% endif %}</span>
+        </label>
+        <div class="stepper">
+          <button type="button" data-step="{% if row.exercise.unit == 'km' %}-0.5{% else %}-5{% endif %}" aria-label="{% trans 'Less' %}"{% if not is_editable %} disabled{% endif %}>−</button>
+          <input id="exercise-{{ row.exercise.id }}" name="exercise-{{ row.exercise.id }}" type="text" inputmode="decimal" autocomplete="off" value="{{ row.amount }}"{% if not is_editable %} disabled{% endif %}>
+          <button type="button" data-step="{% if row.exercise.unit == 'km' %}0.5{% else %}5{% endif %}" aria-label="{% trans 'More' %}"{% if not is_editable %} disabled{% endif %}>+</button>
+        </div>
+        <div class="points num">{{ row.points|floatformat:"-1" }}<small>{% trans "points" %}</small></div>
+      </div>
+    {% endfor %}
+    <noscript><div class="statusrow"><button class="btn primary" type="submit">{% trans "Save" %}</button></div></noscript>
+  </form>
+
+  <div class="card statusrow">
+    <span>{% trans "Strikes" %}</span>
+    <span class="strikes">{% for is_on in strike_dots %}<i class="{% if is_on %}on{% endif %}"></i>{% endfor %}</span>
+    <span class="hint">
+      {% if standing.is_out %}
+        {% blocktrans with date=standing.eliminated_on|date:"j. n. Y" %}You are out since {{ date }}. Next time!{% endblocktrans %}
+      {% elif standing.eliminated_on %}
+        {% trans "Third strike. Fill in a missed day before it locks, or you are out." %}
+      {% elif standing.strikes %}
+        {% trans "Strike days:" %} {% for strike_date in standing.strike_dates %}{{ strike_date|date:"j. n." }}{% if not forloop.last %}, {% endif %}{% endfor %}
+      {% elif today < challenge.first_strike_date %}
+        {% blocktrans with date=challenge.first_strike_date|date:"j. n. Y" %}Adaptation period: strikes count from {{ date }}.{% endblocktrans %}
+      {% else %}
+        {% trans "No strike so far." %}
+      {% endif %}
+    </span>
+  </div>
+
+  <p class="hint">
+    {% if is_editable %}
+      {% blocktrans with date=unlock_until|date:"j. n. Y" %}Saved automatically. You can edit this day until the end of {{ date }}.{% endblocktrans %}
+    {% else %}
+      {% trans "This day is locked. Only an admin can change it." %}
+    {% endif %}
+  </p>
+</div>

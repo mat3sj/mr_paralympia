@@ -1,0 +1,761 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 15:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+
+#: accounts/forms.py:36
+msgid "The anti-bot check failed. Reload the page and try again."
+msgstr ""
+"Ověření proti botům se nepovedlo. Načti stránku znovu a zkus to ještě "
+"jednou."
+
+#: accounts/forms.py:66
+msgid "Enter a real year of birth."
+msgstr "Zadej skutečný rok narození."
+
+#: accounts/models.py:42
+msgid "email"
+msgstr "e-mail"
+
+#: accounts/models.py:43
+msgid "year of birth"
+msgstr "rok narození"
+
+#: accounts/models.py:44
+msgid "where I am from"
+msgstr "odkud jsem"
+
+#: accounts/models.py:45
+msgid "job"
+msgstr "práce"
+
+#: accounts/models.py:46
+msgid "hobbies"
+msgstr "koníčky"
+
+#: accounts/models.py:47
+msgid "photo"
+msgstr "fotka"
+
+#: accounts/models.py:48
+msgid "language"
+msgstr "jazyk"
+
+#: accounts/models.py:49
+msgid "approved"
+msgstr "schválen"
+
+#: accounts/views.py:17
+msgid "Profile saved."
+msgstr "Profil uložen."
+
+#: challenges/models.py:10
+msgid "name"
+msgstr "název"
+
+#: challenges/models.py:11
+msgid "start date"
+msgstr "začátek"
+
+#: challenges/models.py:12
+msgid "minimum on the first day"
+msgstr "minimum první den"
+
+#: challenges/models.py:13
+msgid "daily increase of the minimum"
+msgstr "denní přírůstek minima"
+
+#: challenges/models.py:14
+msgid "adaptation days without strikes"
+msgstr "dny adaptace bez striků"
+
+#: challenges/models.py:15
+msgid "days a record stays editable"
+msgstr "kolik dní jde záznam upravit"
+
+#: challenges/models.py:16
+msgid "strikes that eliminate a player"
+msgstr "počet striků do vyřazení"
+
+#: challenges/models.py:17
+msgid "entry fee (CZK)"
+msgstr "startovné (Kč)"
+
+#: challenges/models.py:18
+msgid "bank account"
+msgstr "číslo účtu"
+
+#: challenges/models.py:19
+msgid "rules in Czech"
+msgstr "pravidla česky"
+
+#: challenges/models.py:20
+msgid "rules in English"
+msgstr "pravidla anglicky"
+
+#: challenges/models.py:69
+msgid "repetitions"
+msgstr "opakování"
+
+#: challenges/models.py:70
+msgid "kilometres"
+msgstr "kilometry"
+
+#: challenges/models.py:74
+msgid "name in Czech"
+msgstr "název česky"
+
+#: challenges/models.py:75
+msgid "name in English"
+msgstr "název anglicky"
+
+#: challenges/models.py:76
+msgid "points per unit"
+msgstr "body za jednotku"
+
+#: challenges/models.py:77
+msgid "unit"
+msgstr "jednotka"
+
+#: challenges/models.py:78
+msgid "order"
+msgstr "pořadí"
+
+#: challenges/models.py:98
+msgid "paid"
+msgstr "zaplaceno"
+
+#: challenges/models.py:99
+msgid "paid at"
+msgstr "zaplaceno dne"
+
+#: challenges/models.py:115
+msgid "date"
+msgstr "datum"
+
+#: challenges/models.py:116
+msgid "amount"
+msgstr "množství"
+
+#: challenges/views.py:241
+msgid ""
+"You signed up. Pay the entry fee; you can log exercise once an admin "
+"confirms it."
+msgstr ""
+"Jsi přihlášený. Zaplať startovné, zapisovat můžeš, jakmile ho admin potvrdí."
+
+#: challenges/views.py:257
+msgid "Mr. Paralympia: your account is approved"
+msgstr "Mr. Paralympia: tvůj účet je schválený"
+
+#: challenges/views.py:258
+#, python-format
+msgid "An admin approved your account. Sign in here: %(url)s"
+msgstr "Admin schválil tvůj účet. Přihlas se tady: %(url)s"
+
+#: challenges/views.py:276
+#, python-format
+msgid "%(user)s approved."
+msgstr "%(user)s schválen."
+
+#: challenges/views.py:280
+#, python-format
+msgid "Registration %(email)s deleted."
+msgstr "Registrace %(email)s smazána."
+
+#: config/settings.py:104
+msgid "Czech"
+msgstr "Čeština"
+
+#: config/settings.py:105
+msgid "English"
+msgstr "Angličtina"
+
+#: templates/account/_google_button.html:4
+msgid "Continue with Google"
+msgstr "Pokračovat přes Google"
+
+#: templates/account/_google_button.html:6
+msgid "or by email"
+msgstr "nebo e-mailem"
+
+#: templates/account/login.html:3 templates/account/login.html:5
+#: templates/account/login.html:13
+msgid "Sign in"
+msgstr "Přihlásit se"
+
+#: templates/account/login.html:10 templates/account/signup.html:11
+msgid "Email"
+msgstr "E-mail"
+
+#: templates/account/login.html:11 templates/account/signup.html:12
+msgid "Password"
+msgstr "Heslo"
+
+#: templates/account/login.html:16
+#, python-format
+msgid ""
+"No account yet? <a href=\"%(signup_url)s\">Sign up</a>. Forgot your "
+"password? <a href=\"%(reset_url)s\">Reset it</a>."
+msgstr ""
+"Nemáš účet? <a href=\"%(signup_url)s\">Zaregistruj se</a>. Zapomenuté heslo?"
+" <a href=\"%(reset_url)s\">Obnov si ho</a>."
+
+#: templates/account/signup.html:3 templates/account/signup.html:6
+#: templates/account/signup.html:16
+msgid "Sign up"
+msgstr "Registrace"
+
+#: templates/account/signup.html:13
+msgid "Password again"
+msgstr "Heslo znovu"
+
+#: templates/account/signup.html:18
+msgid ""
+"After signing up you confirm your email and wait until an admin approves "
+"you."
+msgstr "Po registraci potvrdíš e-mail a počkáš, až tě admin schválí."
+
+#: templates/account/signup.html:19
+#, python-format
+msgid "Already have an account? <a href=\"%(login_url)s\">Sign in</a>."
+msgstr "Už máš účet? <a href=\"%(login_url)s\">Přihlas se</a>."
+
+#: templates/accounts/pending.html:3
+#: templates/challenges/manage_participants.html:14
+msgid "Waiting for approval"
+msgstr "Čekají na schválení"
+
+#: templates/accounts/pending.html:5
+msgid "Almost there"
+msgstr "Skoro hotovo"
+
+#: templates/accounts/pending.html:6
+msgid ""
+"An admin has to approve your account. You will get an email once it happens."
+msgstr "Tvůj účet musí schválit admin. Až se to stane, přijde ti e-mail."
+
+#: templates/accounts/pending.html:7
+msgid "Edit profile"
+msgstr "Upravit profil"
+
+#: templates/accounts/pending.html:8 templates/base.html:39
+msgid "Sign out"
+msgstr "Odhlásit"
+
+#: templates/accounts/profile.html:3 templates/base.html:65
+msgid "Profile"
+msgstr "Profil"
+
+#: templates/accounts/profile.html:4 templates/base.html:29
+msgid "profile"
+msgstr "profil"
+
+#: templates/accounts/profile.html:5
+msgid "What the others will see about you"
+msgstr "Co o tobě uvidí ostatní"
+
+#: templates/accounts/profile.html:8
+msgid "Tell the others who you are"
+msgstr "Řekni ostatním, kdo jsi"
+
+#: templates/accounts/profile.html:9
+msgid ""
+"Name and year of birth are required. The rest shows up when someone hovers "
+"over your name."
+msgstr ""
+"Jméno a rok narození jsou povinné. Zbytek se ukáže, když někdo najede na "
+"tvoje jméno."
+
+#: templates/accounts/profile.html:17
+msgid "Photo"
+msgstr "Fotka"
+
+#: templates/accounts/profile.html:19
+msgid "Any size. We store it cropped to 400 × 400 px."
+msgstr "Klidně velkou. Uložíme ji oříznutou na 400 × 400 px."
+
+#: templates/accounts/profile.html:24
+msgid "First name"
+msgstr "Jméno"
+
+#: templates/accounts/profile.html:25
+msgid "Last name"
+msgstr "Příjmení"
+
+#: templates/accounts/profile.html:28
+msgid "Year of birth"
+msgstr "Rok narození"
+
+#: templates/accounts/profile.html:29
+msgid "Where I am from"
+msgstr "Odkud jsem"
+
+#: templates/accounts/profile.html:31 templates/challenges/board.html:53
+msgid "Job"
+msgstr "Práce"
+
+#: templates/accounts/profile.html:32 templates/challenges/board.html:54
+msgid "Hobbies"
+msgstr "Koníčky"
+
+#: templates/accounts/profile.html:34
+msgid "Language"
+msgstr "Jazyk"
+
+#: templates/accounts/profile.html:35
+msgid "Saved to your account. Browser and system settings are ignored."
+msgstr "Uloží se k účtu. Nastavení prohlížeče ani systému se nebere v potaz."
+
+#: templates/accounts/profile.html:37
+msgid "Save profile"
+msgstr "Uložit profil"
+
+#: templates/base.html:22
+msgid "We are losers. Let's be like them."
+msgstr "Jsme lemry. Buďme jako oni."
+
+#: templates/base.html:24
+msgid "Challenge"
+msgstr "Výzva"
+
+#: templates/base.html:25 templates/challenges/day.html:4
+#: templates/challenges/not_started.html:4
+msgid "my-day"
+msgstr "můj-den"
+
+#: templates/base.html:26 templates/challenges/board.html:4
+msgid "board"
+msgstr "tabulka"
+
+#: templates/base.html:27 templates/challenges/join.html:4
+msgid "sign-up"
+msgstr "přihláška"
+
+#: templates/base.html:28
+msgid "Me"
+msgstr "Já"
+
+#: templates/base.html:31 templates/challenges/manage_participants.html:5
+msgid "Admin only"
+msgstr "Jen pro admina"
+
+#: templates/base.html:32 templates/challenges/manage_participants.html:4
+msgid "participants"
+msgstr "účastníci"
+
+#: templates/base.html:53
+msgid ""
+"Paralympians are the most persistent athletes there are. We are losers. "
+"Let's be a little like them."
+msgstr ""
+"Paralympionici jsou nejvytrvalejší sportovci na světě. My jsme lemry. Zkusme"
+" být aspoň trochu jako oni."
+
+#: templates/base.html:62 templates/challenges/day.html:3
+#: templates/challenges/not_started.html:3
+msgid "My day"
+msgstr "Můj den"
+
+#: templates/base.html:63 templates/challenges/board.html:3
+msgid "Board"
+msgstr "Tabulka"
+
+#: templates/base.html:64 templates/challenges/join.html:3
+msgid "Sign-up"
+msgstr "Přihláška"
+
+#: templates/challenges/_day_panel.html:5
+msgid "The challenge is over."
+msgstr "Výzva skončila."
+
+#: templates/challenges/_day_panel.html:6 templates/challenges/board.html:11
+msgid "Winners:"
+msgstr "Vítězové:"
+
+#: templates/challenges/_day_panel.html:10
+msgid "Days"
+msgstr "Dny"
+
+#: templates/challenges/_day_panel.html:13
+msgid "today"
+msgstr "dnes"
+
+#: templates/challenges/_day_panel.html:15
+msgid "locked"
+msgstr "zamčeno"
+
+#: templates/challenges/_day_panel.html:23
+#, python-format
+msgid "Day %(number)s"
+msgstr "%(number)s. den"
+
+#: templates/challenges/_day_panel.html:24
+msgid "pts"
+msgstr "b."
+
+#: templates/challenges/_day_panel.html:27
+#, python-format
+msgid "Done, +%(surplus)s pts"
+msgstr "Splněno, +%(surplus)s b."
+
+#: templates/challenges/_day_panel.html:29
+#, python-format
+msgid "%(missing)s pts to go"
+msgstr "Chybí %(missing)s b."
+
+#: templates/challenges/_day_panel.html:31
+msgid "Missed, adaptation (no strike)"
+msgstr "Nesplněno, adaptace (bez striku)"
+
+#: templates/challenges/_day_panel.html:33
+#, python-format
+msgid "Strike, %(missing)s pts missing"
+msgstr "Strike, chybí %(missing)s b."
+
+#: templates/challenges/_day_panel.html:46
+#, python-format
+msgid "%(points)s pts per km"
+msgstr "%(points)s b. za km"
+
+#: templates/challenges/_day_panel.html:46
+#, python-format
+msgid "%(points)s pts per rep"
+msgstr "%(points)s b. za kus"
+
+#: templates/challenges/_day_panel.html:49
+msgid "Less"
+msgstr "Méně"
+
+#: templates/challenges/_day_panel.html:51
+msgid "More"
+msgstr "Více"
+
+#: templates/challenges/_day_panel.html:53
+msgid "points"
+msgstr "bodů"
+
+#: templates/challenges/_day_panel.html:56
+msgid "Save"
+msgstr "Uložit"
+
+#: templates/challenges/_day_panel.html:60 templates/challenges/board.html:31
+msgid "Strikes"
+msgstr "Striky"
+
+#: templates/challenges/_day_panel.html:64
+#, python-format
+msgid "You are out since %(date)s. Next time!"
+msgstr "Jsi venku od %(date)s. Příště!"
+
+#: templates/challenges/_day_panel.html:66
+msgid "Third strike. Fill in a missed day before it locks, or you are out."
+msgstr "Třetí strike. Doplň zmeškaný den, než se zamkne, jinak končíš."
+
+#: templates/challenges/_day_panel.html:68
+msgid "Strike days:"
+msgstr "Striky ve dnech:"
+
+#: templates/challenges/_day_panel.html:70
+#, python-format
+msgid "Adaptation period: strikes count from %(date)s."
+msgstr "Adaptační období: striky se počítají od %(date)s."
+
+#: templates/challenges/_day_panel.html:72
+msgid "No strike so far."
+msgstr "Zatím žádný strike."
+
+#: templates/challenges/_day_panel.html:79
+#, python-format
+msgid "Saved automatically. You can edit this day until the end of %(date)s."
+msgstr "Ukládá se automaticky. Tento den můžeš upravovat do konce %(date)s."
+
+#: templates/challenges/_day_panel.html:81
+msgid "This day is locked. Only an admin can change it."
+msgstr "Tento den je zamčený. Změnit ho může jen admin."
+
+#: templates/challenges/board.html:5
+#, python-format
+msgid "day %(number)s, minimum %(minimum)s pts"
+msgstr "%(number)s. den, minimum %(minimum)s b."
+
+#: templates/challenges/board.html:10
+#, python-format
+msgid "The challenge ended on %(date)s."
+msgstr "Výzva skončila %(date)s."
+
+#: templates/challenges/board.html:16
+#, python-format
+msgid "The challenge starts on %(date)s."
+msgstr "Výzva začíná %(date)s."
+
+#: templates/challenges/board.html:18
+msgid "Nobody with a confirmed payment yet."
+msgstr "Zatím nikdo nemá potvrzenou platbu."
+
+#: templates/challenges/board.html:21
+msgid "done"
+msgstr "splněno"
+
+#: templates/challenges/board.html:22
+msgid "missed in adaptation (no strike)"
+msgstr "nesplněno v adaptaci (bez striku)"
+
+#: templates/challenges/board.html:23
+msgid "strike"
+msgstr "strike"
+
+#: templates/challenges/board.html:24
+msgid "today (still running)"
+msgstr "dnes (ještě běží)"
+
+#: templates/challenges/board.html:30
+#: templates/challenges/manage_participants.html:40
+msgid "Player"
+msgstr "Hráč"
+
+#: templates/challenges/board.html:35
+msgid "Total"
+msgstr "Celkem"
+
+#: templates/challenges/board.html:36
+msgid "Status"
+msgstr "Stav"
+
+#: templates/challenges/board.html:49
+#, python-format
+msgid "born %(year)s"
+msgstr "ročník %(year)s"
+
+#: templates/challenges/board.html:52
+msgid "From"
+msgstr "Odkud"
+
+#: templates/challenges/board.html:68
+#, python-format
+msgid "day %(number)s"
+msgstr "%(number)s. den"
+
+#: templates/challenges/board.html:74
+#, python-format
+msgid "Total (minimum %(minimum)s)"
+msgstr "Celkem (minimum %(minimum)s)"
+
+#: templates/challenges/board.html:77
+msgid "Nothing logged."
+msgstr "Nic nezapsáno."
+
+#: templates/challenges/board.html:80
+msgid "Strike, the day is locked."
+msgstr "Strike, den je zamčený."
+
+#: templates/challenges/board.html:80
+#, python-format
+msgid "Strike, can still be fixed until %(date)s."
+msgstr "Strike, dá se ještě opravit do %(date)s."
+
+#: templates/challenges/board.html:82
+msgid "Adaptation period, no strike."
+msgstr "Adaptační období, bez striku."
+
+#: templates/challenges/board.html:84
+msgid "The day is still running."
+msgstr "Den ještě běží."
+
+#: templates/challenges/board.html:93
+msgid "winner"
+msgstr "vítěz"
+
+#: templates/challenges/board.html:94
+#, python-format
+msgid "out on day %(number)s"
+msgstr "venku od %(number)s. dne"
+
+#: templates/challenges/board.html:95
+msgid "being eliminated"
+msgstr "vypadává"
+
+#: templates/challenges/board.html:96
+msgid "at risk"
+msgstr "ohrožen"
+
+#: templates/challenges/board.html:97
+msgid "playing"
+msgstr "ve hře"
+
+#: templates/challenges/board.html:104
+msgid ""
+"Each column is a day with its minimum. Hover over a number for the breakdown"
+" and over a name for the profile (on a phone, tap)."
+msgstr ""
+"Každý sloupec je den a jeho minimum. Najeď na číslo pro rozpad po cvicích a "
+"na jméno pro profil (na mobilu ťukni)."
+
+#: templates/challenges/join.html:5
+msgid "Rules and entry fee"
+msgstr "Pravidla a startovné"
+
+#: templates/challenges/join.html:8
+msgid "No challenge is set up yet."
+msgstr "Zatím není založená žádná výzva."
+
+#: templates/challenges/join.html:13
+#, python-format
+msgid "Starts %(start)s · sign-up until %(last)s"
+msgstr "Začíná %(start)s · přihlášky do %(last)s"
+
+#: templates/challenges/join.html:19
+#, python-format
+msgid "%(points)s pts"
+msgstr "%(points)s b."
+
+#: templates/challenges/join.html:27
+msgid "You are in"
+msgstr "Jsi ve hře"
+
+#: templates/challenges/join.html:28
+msgid "Payment confirmed. Good luck!"
+msgstr "Platba potvrzena. Hodně štěstí!"
+
+#: templates/challenges/join.html:29
+msgid "Go to my day"
+msgstr "Na můj den"
+
+#: templates/challenges/join.html:31
+msgid "Sign-up closed"
+msgstr "Přihlášky uzavřeny"
+
+#: templates/challenges/join.html:32
+#, python-format
+msgid "Joining was possible until %(date)s. See you at the next challenge."
+msgstr "Přidat se šlo do %(date)s. Uvidíme se u další výzvy."
+
+#: templates/challenges/join.html:34
+msgid "Entry fee"
+msgstr "Startovné"
+
+#: templates/challenges/join.html:37
+msgid "Amount"
+msgstr "Částka"
+
+#: templates/challenges/join.html:38
+msgid "Account"
+msgstr "Účet"
+
+#: templates/challenges/join.html:39
+msgid "Variable symbol"
+msgstr "Variabilní symbol"
+
+#: templates/challenges/join.html:40
+msgid "Message"
+msgstr "Zpráva"
+
+#: templates/challenges/join.html:43
+msgid "Waiting for payment confirmation"
+msgstr "Čeká na potvrzení platby"
+
+#: templates/challenges/join.html:44
+msgid ""
+"An admin checks payments by hand. You can log exercise once it is confirmed."
+msgstr ""
+"Platby kontroluje admin ručně. Zapisovat můžeš, jakmile platbu potvrdí."
+
+#: templates/challenges/join.html:48
+msgid "Join the challenge"
+msgstr "Přidat se do výzvy"
+
+#: templates/challenges/join.html:50
+msgid "Scan the QR code in your banking app. Every Czech bank reads it."
+msgstr "Naskenuj QR kód v bankovní aplikaci. Přečte ho každá česká banka."
+
+#: templates/challenges/manage_participants.html:3
+#: templates/challenges/manage_participants.html:36
+msgid "Participants"
+msgstr "Účastníci"
+
+#: templates/challenges/manage_participants.html:9
+msgid "Edit challenge"
+msgstr "Upravit výzvu"
+
+#: templates/challenges/manage_participants.html:10
+msgid "New challenge"
+msgstr "Nová výzva"
+
+#: templates/challenges/manage_participants.html:14
+msgid "verified email only"
+msgstr "jen s ověřeným e-mailem"
+
+#: templates/challenges/manage_participants.html:25
+msgid "Approve"
+msgstr "Schválit"
+
+#: templates/challenges/manage_participants.html:26
+msgid "Delete this registration?"
+msgstr "Smazat tuhle registraci?"
+
+#: templates/challenges/manage_participants.html:26
+msgid "Reject"
+msgstr "Zamítnout"
+
+#: templates/challenges/manage_participants.html:30
+msgid "Nobody is waiting."
+msgstr "Nikdo nečeká."
+
+#: templates/challenges/manage_participants.html:36
+#, python-format
+msgid "paid %(count)s of %(total)s · %(collected)s CZK"
+msgstr "zaplaceno %(count)s z %(total)s · %(collected)s Kč"
+
+#: templates/challenges/manage_participants.html:37
+msgid ""
+"Without a confirmed entry fee a player cannot log exercise. Variable symbol "
+"= user number."
+msgstr ""
+"Bez potvrzeného startovného hráč nemůže zapisovat. Variabilní symbol = číslo"
+" uživatele."
+
+#: templates/challenges/manage_participants.html:40
+msgid "VS"
+msgstr "VS"
+
+#: templates/challenges/manage_participants.html:40
+msgid "Signed up"
+msgstr "Přihlášen"
+
+#: templates/challenges/manage_participants.html:40
+#: templates/challenges/manage_participants.html:50
+msgid "Paid"
+msgstr "Zaplaceno"
+
+#: templates/challenges/manage_participants.html:55
+msgid "Nobody has signed up yet."
+msgstr "Zatím se nikdo nepřihlásil."
+
+#: templates/challenges/not_started.html:8
+#, python-format
+msgid "You are in. The challenge starts on %(date)s."
+msgstr "Jsi ve hře. Výzva začíná %(date)s."
+
+#: templates/challenges/not_started.html:9
+#, python-format
+msgid ""
+"The first day the minimum is %(minimum)s points, then %(increment)s more "
+"every day. Rest while you can."
+msgstr ""
+"První den je minimum %(minimum)s bodů, pak každý den o %(increment)s víc. "
+"Odpočívej, dokud můžeš."

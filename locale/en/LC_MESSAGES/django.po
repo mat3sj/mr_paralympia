@@ -1,0 +1,743 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-27 15:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: accounts/forms.py:36
+msgid "The anti-bot check failed. Reload the page and try again."
+msgstr ""
+
+#: accounts/forms.py:66
+msgid "Enter a real year of birth."
+msgstr ""
+
+#: accounts/models.py:42
+msgid "email"
+msgstr ""
+
+#: accounts/models.py:43
+msgid "year of birth"
+msgstr ""
+
+#: accounts/models.py:44
+msgid "where I am from"
+msgstr ""
+
+#: accounts/models.py:45
+msgid "job"
+msgstr ""
+
+#: accounts/models.py:46
+msgid "hobbies"
+msgstr ""
+
+#: accounts/models.py:47
+msgid "photo"
+msgstr ""
+
+#: accounts/models.py:48
+msgid "language"
+msgstr ""
+
+#: accounts/models.py:49
+msgid "approved"
+msgstr ""
+
+#: accounts/views.py:17
+msgid "Profile saved."
+msgstr ""
+
+#: challenges/models.py:10
+msgid "name"
+msgstr ""
+
+#: challenges/models.py:11
+msgid "start date"
+msgstr ""
+
+#: challenges/models.py:12
+msgid "minimum on the first day"
+msgstr ""
+
+#: challenges/models.py:13
+msgid "daily increase of the minimum"
+msgstr ""
+
+#: challenges/models.py:14
+msgid "adaptation days without strikes"
+msgstr ""
+
+#: challenges/models.py:15
+msgid "days a record stays editable"
+msgstr ""
+
+#: challenges/models.py:16
+msgid "strikes that eliminate a player"
+msgstr ""
+
+#: challenges/models.py:17
+msgid "entry fee (CZK)"
+msgstr ""
+
+#: challenges/models.py:18
+msgid "bank account"
+msgstr ""
+
+#: challenges/models.py:19
+msgid "rules in Czech"
+msgstr ""
+
+#: challenges/models.py:20
+msgid "rules in English"
+msgstr ""
+
+#: challenges/models.py:69
+msgid "repetitions"
+msgstr ""
+
+#: challenges/models.py:70
+msgid "kilometres"
+msgstr ""
+
+#: challenges/models.py:74
+msgid "name in Czech"
+msgstr ""
+
+#: challenges/models.py:75
+msgid "name in English"
+msgstr ""
+
+#: challenges/models.py:76
+msgid "points per unit"
+msgstr ""
+
+#: challenges/models.py:77
+msgid "unit"
+msgstr ""
+
+#: challenges/models.py:78
+msgid "order"
+msgstr ""
+
+#: challenges/models.py:98
+msgid "paid"
+msgstr ""
+
+#: challenges/models.py:99
+msgid "paid at"
+msgstr ""
+
+#: challenges/models.py:115
+msgid "date"
+msgstr ""
+
+#: challenges/models.py:116
+msgid "amount"
+msgstr ""
+
+#: challenges/views.py:241
+msgid ""
+"You signed up. Pay the entry fee; you can log exercise once an admin "
+"confirms it."
+msgstr ""
+
+#: challenges/views.py:257
+msgid "Mr. Paralympia: your account is approved"
+msgstr ""
+
+#: challenges/views.py:258
+#, python-format
+msgid "An admin approved your account. Sign in here: %(url)s"
+msgstr ""
+
+#: challenges/views.py:276
+#, python-format
+msgid "%(user)s approved."
+msgstr ""
+
+#: challenges/views.py:280
+#, python-format
+msgid "Registration %(email)s deleted."
+msgstr ""
+
+#: config/settings.py:104
+msgid "Czech"
+msgstr ""
+
+#: config/settings.py:105
+msgid "English"
+msgstr ""
+
+#: templates/account/_google_button.html:4
+msgid "Continue with Google"
+msgstr ""
+
+#: templates/account/_google_button.html:6
+msgid "or by email"
+msgstr ""
+
+#: templates/account/login.html:3 templates/account/login.html:5
+#: templates/account/login.html:13
+msgid "Sign in"
+msgstr ""
+
+#: templates/account/login.html:10 templates/account/signup.html:11
+msgid "Email"
+msgstr ""
+
+#: templates/account/login.html:11 templates/account/signup.html:12
+msgid "Password"
+msgstr ""
+
+#: templates/account/login.html:16
+#, python-format
+msgid ""
+"No account yet? <a href=\"%(signup_url)s\">Sign up</a>. Forgot your "
+"password? <a href=\"%(reset_url)s\">Reset it</a>."
+msgstr ""
+
+#: templates/account/signup.html:3 templates/account/signup.html:6
+#: templates/account/signup.html:16
+msgid "Sign up"
+msgstr ""
+
+#: templates/account/signup.html:13
+msgid "Password again"
+msgstr ""
+
+#: templates/account/signup.html:18
+msgid ""
+"After signing up you confirm your email and wait until an admin approves you."
+msgstr ""
+
+#: templates/account/signup.html:19
+#, python-format
+msgid "Already have an account? <a href=\"%(login_url)s\">Sign in</a>."
+msgstr ""
+
+#: templates/accounts/pending.html:3
+#: templates/challenges/manage_participants.html:14
+msgid "Waiting for approval"
+msgstr ""
+
+#: templates/accounts/pending.html:5
+msgid "Almost there"
+msgstr ""
+
+#: templates/accounts/pending.html:6
+msgid ""
+"An admin has to approve your account. You will get an email once it happens."
+msgstr ""
+
+#: templates/accounts/pending.html:7
+msgid "Edit profile"
+msgstr ""
+
+#: templates/accounts/pending.html:8 templates/base.html:39
+msgid "Sign out"
+msgstr ""
+
+#: templates/accounts/profile.html:3 templates/base.html:65
+msgid "Profile"
+msgstr ""
+
+#: templates/accounts/profile.html:4 templates/base.html:29
+msgid "profile"
+msgstr ""
+
+#: templates/accounts/profile.html:5
+msgid "What the others will see about you"
+msgstr ""
+
+#: templates/accounts/profile.html:8
+msgid "Tell the others who you are"
+msgstr ""
+
+#: templates/accounts/profile.html:9
+msgid ""
+"Name and year of birth are required. The rest shows up when someone hovers "
+"over your name."
+msgstr ""
+
+#: templates/accounts/profile.html:17
+msgid "Photo"
+msgstr ""
+
+#: templates/accounts/profile.html:19
+msgid "Any size. We store it cropped to 400 × 400 px."
+msgstr ""
+
+#: templates/accounts/profile.html:24
+msgid "First name"
+msgstr ""
+
+#: templates/accounts/profile.html:25
+msgid "Last name"
+msgstr ""
+
+#: templates/accounts/profile.html:28
+msgid "Year of birth"
+msgstr ""
+
+#: templates/accounts/profile.html:29
+msgid "Where I am from"
+msgstr ""
+
+#: templates/accounts/profile.html:31 templates/challenges/board.html:53
+msgid "Job"
+msgstr ""
+
+#: templates/accounts/profile.html:32 templates/challenges/board.html:54
+msgid "Hobbies"
+msgstr ""
+
+#: templates/accounts/profile.html:34
+msgid "Language"
+msgstr ""
+
+#: templates/accounts/profile.html:35
+msgid "Saved to your account. Browser and system settings are ignored."
+msgstr ""
+
+#: templates/accounts/profile.html:37
+msgid "Save profile"
+msgstr ""
+
+#: templates/base.html:22
+msgid "We are losers. Let's be like them."
+msgstr ""
+
+#: templates/base.html:24
+msgid "Challenge"
+msgstr ""
+
+#: templates/base.html:25 templates/challenges/day.html:4
+#: templates/challenges/not_started.html:4
+msgid "my-day"
+msgstr ""
+
+#: templates/base.html:26 templates/challenges/board.html:4
+msgid "board"
+msgstr ""
+
+#: templates/base.html:27 templates/challenges/join.html:4
+msgid "sign-up"
+msgstr ""
+
+#: templates/base.html:28
+msgid "Me"
+msgstr ""
+
+#: templates/base.html:31 templates/challenges/manage_participants.html:5
+msgid "Admin only"
+msgstr ""
+
+#: templates/base.html:32 templates/challenges/manage_participants.html:4
+msgid "participants"
+msgstr ""
+
+#: templates/base.html:53
+msgid ""
+"Paralympians are the most persistent athletes there are. We are losers. "
+"Let's be a little like them."
+msgstr ""
+
+#: templates/base.html:62 templates/challenges/day.html:3
+#: templates/challenges/not_started.html:3
+msgid "My day"
+msgstr ""
+
+#: templates/base.html:63 templates/challenges/board.html:3
+msgid "Board"
+msgstr ""
+
+#: templates/base.html:64 templates/challenges/join.html:3
+msgid "Sign-up"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:5
+msgid "The challenge is over."
+msgstr ""
+
+#: templates/challenges/_day_panel.html:6 templates/challenges/board.html:11
+msgid "Winners:"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:10
+msgid "Days"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:13
+msgid "today"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:15
+msgid "locked"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:23
+#, python-format
+msgid "Day %(number)s"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:24
+msgid "pts"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:27
+#, python-format
+msgid "Done, +%(surplus)s pts"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:29
+#, python-format
+msgid "%(missing)s pts to go"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:31
+msgid "Missed, adaptation (no strike)"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:33
+#, python-format
+msgid "Strike, %(missing)s pts missing"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:46
+#, python-format
+msgid "%(points)s pts per km"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:46
+#, python-format
+msgid "%(points)s pts per rep"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:49
+msgid "Less"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:51
+msgid "More"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:53
+msgid "points"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:56
+msgid "Save"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:60 templates/challenges/board.html:31
+msgid "Strikes"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:64
+#, python-format
+msgid "You are out since %(date)s. Next time!"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:66
+msgid "Third strike. Fill in a missed day before it locks, or you are out."
+msgstr ""
+
+#: templates/challenges/_day_panel.html:68
+msgid "Strike days:"
+msgstr ""
+
+#: templates/challenges/_day_panel.html:70
+#, python-format
+msgid "Adaptation period: strikes count from %(date)s."
+msgstr ""
+
+#: templates/challenges/_day_panel.html:72
+msgid "No strike so far."
+msgstr ""
+
+#: templates/challenges/_day_panel.html:79
+#, python-format
+msgid "Saved automatically. You can edit this day until the end of %(date)s."
+msgstr ""
+
+#: templates/challenges/_day_panel.html:81
+msgid "This day is locked. Only an admin can change it."
+msgstr ""
+
+#: templates/challenges/board.html:5
+#, python-format
+msgid "day %(number)s, minimum %(minimum)s pts"
+msgstr ""
+
+#: templates/challenges/board.html:10
+#, python-format
+msgid "The challenge ended on %(date)s."
+msgstr ""
+
+#: templates/challenges/board.html:16
+#, python-format
+msgid "The challenge starts on %(date)s."
+msgstr ""
+
+#: templates/challenges/board.html:18
+msgid "Nobody with a confirmed payment yet."
+msgstr ""
+
+#: templates/challenges/board.html:21
+msgid "done"
+msgstr ""
+
+#: templates/challenges/board.html:22
+msgid "missed in adaptation (no strike)"
+msgstr ""
+
+#: templates/challenges/board.html:23
+msgid "strike"
+msgstr ""
+
+#: templates/challenges/board.html:24
+msgid "today (still running)"
+msgstr ""
+
+#: templates/challenges/board.html:30
+#: templates/challenges/manage_participants.html:40
+msgid "Player"
+msgstr ""
+
+#: templates/challenges/board.html:35
+msgid "Total"
+msgstr ""
+
+#: templates/challenges/board.html:36
+msgid "Status"
+msgstr ""
+
+#: templates/challenges/board.html:49
+#, python-format
+msgid "born %(year)s"
+msgstr ""
+
+#: templates/challenges/board.html:52
+msgid "From"
+msgstr ""
+
+#: templates/challenges/board.html:68
+#, python-format
+msgid "day %(number)s"
+msgstr ""
+
+#: templates/challenges/board.html:74
+#, python-format
+msgid "Total (minimum %(minimum)s)"
+msgstr ""
+
+#: templates/challenges/board.html:77
+msgid "Nothing logged."
+msgstr ""
+
+#: templates/challenges/board.html:80
+msgid "Strike, the day is locked."
+msgstr ""
+
+#: templates/challenges/board.html:80
+#, python-format
+msgid "Strike, can still be fixed until %(date)s."
+msgstr ""
+
+#: templates/challenges/board.html:82
+msgid "Adaptation period, no strike."
+msgstr ""
+
+#: templates/challenges/board.html:84
+msgid "The day is still running."
+msgstr ""
+
+#: templates/challenges/board.html:93
+msgid "winner"
+msgstr ""
+
+#: templates/challenges/board.html:94
+#, python-format
+msgid "out on day %(number)s"
+msgstr ""
+
+#: templates/challenges/board.html:95
+msgid "being eliminated"
+msgstr ""
+
+#: templates/challenges/board.html:96
+msgid "at risk"
+msgstr ""
+
+#: templates/challenges/board.html:97
+msgid "playing"
+msgstr ""
+
+#: templates/challenges/board.html:104
+msgid ""
+"Each column is a day with its minimum. Hover over a number for the breakdown "
+"and over a name for the profile (on a phone, tap)."
+msgstr ""
+
+#: templates/challenges/join.html:5
+msgid "Rules and entry fee"
+msgstr ""
+
+#: templates/challenges/join.html:8
+msgid "No challenge is set up yet."
+msgstr ""
+
+#: templates/challenges/join.html:13
+#, python-format
+msgid "Starts %(start)s · sign-up until %(last)s"
+msgstr ""
+
+#: templates/challenges/join.html:19
+#, python-format
+msgid "%(points)s pts"
+msgstr ""
+
+#: templates/challenges/join.html:27
+msgid "You are in"
+msgstr ""
+
+#: templates/challenges/join.html:28
+msgid "Payment confirmed. Good luck!"
+msgstr ""
+
+#: templates/challenges/join.html:29
+msgid "Go to my day"
+msgstr ""
+
+#: templates/challenges/join.html:31
+msgid "Sign-up closed"
+msgstr ""
+
+#: templates/challenges/join.html:32
+#, python-format
+msgid "Joining was possible until %(date)s. See you at the next challenge."
+msgstr ""
+
+#: templates/challenges/join.html:34
+msgid "Entry fee"
+msgstr ""
+
+#: templates/challenges/join.html:37
+msgid "Amount"
+msgstr ""
+
+#: templates/challenges/join.html:38
+msgid "Account"
+msgstr ""
+
+#: templates/challenges/join.html:39
+msgid "Variable symbol"
+msgstr ""
+
+#: templates/challenges/join.html:40
+msgid "Message"
+msgstr ""
+
+#: templates/challenges/join.html:43
+msgid "Waiting for payment confirmation"
+msgstr ""
+
+#: templates/challenges/join.html:44
+msgid ""
+"An admin checks payments by hand. You can log exercise once it is confirmed."
+msgstr ""
+
+#: templates/challenges/join.html:48
+msgid "Join the challenge"
+msgstr ""
+
+#: templates/challenges/join.html:50
+msgid "Scan the QR code in your banking app. Every Czech bank reads it."
+msgstr ""
+
+#: templates/challenges/manage_participants.html:3
+#: templates/challenges/manage_participants.html:36
+msgid "Participants"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:9
+msgid "Edit challenge"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:10
+msgid "New challenge"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:14
+msgid "verified email only"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:25
+msgid "Approve"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:26
+msgid "Delete this registration?"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:26
+msgid "Reject"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:30
+msgid "Nobody is waiting."
+msgstr ""
+
+#: templates/challenges/manage_participants.html:36
+#, python-format
+msgid "paid %(count)s of %(total)s · %(collected)s CZK"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:37
+msgid ""
+"Without a confirmed entry fee a player cannot log exercise. Variable symbol "
+"= user number."
+msgstr ""
+
+#: templates/challenges/manage_participants.html:40
+msgid "VS"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:40
+msgid "Signed up"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:40
+#: templates/challenges/manage_participants.html:50
+msgid "Paid"
+msgstr ""
+
+#: templates/challenges/manage_participants.html:55
+msgid "Nobody has signed up yet."
+msgstr ""
+
+#: templates/challenges/not_started.html:8
+#, python-format
+msgid "You are in. The challenge starts on %(date)s."
+msgstr ""
+
+#: templates/challenges/not_started.html:9
+#, python-format
+msgid ""
+"The first day the minimum is %(minimum)s points, then %(increment)s more "
+"every day. Rest while you can."
+msgstr ""

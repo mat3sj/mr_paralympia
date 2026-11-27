@@ -1,0 +1,6 @@
+{% load i18n socialaccount %}{% provider_login_url 'google' as google_url %}
+<form method="post" action="{{ google_url }}">
+  {% csrf_token %}
+  <button class="btn wide" type="submit"><span class="google-mark">G</span>{% trans "Continue with Google" %}</button>
+</form>
+<div class="or">{% trans "or by email" %}</div>

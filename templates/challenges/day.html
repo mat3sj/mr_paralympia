@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "My day" %}{% endblock %}
+{% block heading %}# {% trans "my-day" %}{% endblock %}
+{% block subheading %}{{ challenge.name }}{% endblock %}
+{% block main %}{% include "challenges/_day_panel.html" %}{% endblock %}
