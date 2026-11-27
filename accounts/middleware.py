@@ -2,17 +2,6 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.utils import translation
 
-# Paths a signed-in user may open before their profile is complete and an admin has approved them.
-OPEN_PATH_PREFIXES = (
-    '/accounts/',
-    '/profile/',
-    '/pending/',
-    '/language/',
-    '/admin/',
-    settings.MEDIA_URL,
-    '/' + settings.STATIC_URL,
-)
-
 
 class UserLanguageMiddleware:
     """Activates the language the user picked, never the one the browser asks for."""
@@ -31,6 +20,18 @@ class UserLanguageMiddleware:
         response = self.get_response(request)
         response.headers.setdefault('Content-Language', language)
         return response
+
+
+# Paths a signed-in user may open before their profile is complete and an admin has approved them.
+OPEN_PATH_PREFIXES = (
+    '/accounts/',
+    '/profile/',
+    '/pending/',
+    '/language/',
+    '/admin/',
+    settings.MEDIA_URL,
+    '/' + settings.STATIC_URL,
+)
 
 
 class ApprovedUserMiddleware:

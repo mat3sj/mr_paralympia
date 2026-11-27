@@ -14,11 +14,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def waiting_for_approval(self):
-        return self \
-            .filter(is_approved=False, is_staff=False, is_active=True, emailaddress__verified=True) \
-            .order_by('date_joined')
-
     def create_superuser(self, email, password=None, **extra_fields):
         return self.create_user(
             email,
@@ -28,6 +23,11 @@ class UserManager(BaseUserManager):
             is_approved=True,
             **extra_fields,
         )
+
+    def waiting_for_approval(self):
+        return self \
+            .filter(is_approved=False, is_staff=False, is_active=True, emailaddress__verified=True) \
+            .order_by('date_joined')
 
 
 AVATAR_COLORS = ['#1164a3', '#e01e5a', '#2bac76', '#8a3ffc', '#d97706', '#0f766e', '#b45309']

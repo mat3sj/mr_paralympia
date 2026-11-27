@@ -14,7 +14,6 @@ from PIL import Image, ImageOps
 
 from accounts.models import User
 
-PHOTO_SIZE = (400, 400)
 TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
 
@@ -35,6 +34,9 @@ class SignupForm(AllauthSignupForm):
             if not token or not is_turnstile_token_valid(token):
                 raise forms.ValidationError(_('The anti-bot check failed. Reload the page and try again.'))
         return cleaned_data
+
+
+PHOTO_SIZE = (400, 400)
 
 
 def shrink_photo(uploaded_file):
